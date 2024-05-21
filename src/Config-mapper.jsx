@@ -32,13 +32,12 @@ function ConfigMapper() {
       
     return (
       <>
-        <div>
+        <div style={{height: '405px', width: '800px', objectFit: 'contain'}}>
             <AreaSelector
                 maxAreas={1}
                 areas={areas}
                 onChange={setAreas}
                 wrConfigMappererStyle={{
-                  height: '405px', width: '800px',
                   border: '2px solid black'
                 }}
                 globalAreaStyle={{
