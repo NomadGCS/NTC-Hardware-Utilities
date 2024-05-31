@@ -8,6 +8,15 @@ This is a collection of utility apps which run in a windows based electron app.
 <br>
 
 
+## Running
+1.  Run locally: 'npm run start'
+2.  Production Exe: 'npm run make'
+
+
+<br>
+<br>
+
+
 ## Adding a new application or window
 
 1.  Add new entry point in 'forge.config.js' (take note of 'name' field)
