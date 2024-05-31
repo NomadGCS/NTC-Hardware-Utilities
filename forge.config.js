@@ -37,11 +37,27 @@ module.exports = {
           config: './webpack.renderer.config.js',
           entryPoints: [
             {
-              html: './src/index.html',
-              js: './src/renderer.js',
-              name: 'main_window',
+              html: './src/webapps/default/index.html',
+              js: './src/webapps/default/renderer.js',
+              name: 'default',
               preload: {
-                js: './src/preload.js',
+                js: './src/webapps/default/preload.js',
+              },
+            },
+            {
+              html: './src/webapps/interlockMapper/index.html',
+              js: './src/webapps/interlockMapper/renderer.js',
+              name: 'interlock_mapper',
+              preload: {
+                js: './src/webapps/interlockMapper/preload.js',
+              },
+            },
+            {
+              html: './src/webapps/configBuilder/index.html',
+              js: './src/webapps/configBuilder/renderer.js',
+              name: 'config_builder',
+              preload: {
+                js: './src/webapps/configBuilder/preload.js',
               },
             },
           ],

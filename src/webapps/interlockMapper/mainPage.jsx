@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
-import ConfigMapper from './Config-mapper.jsx';
+import InterlockMapper from './InterlockMapper.jsx';
 
 //add all other config pages to this file
 function MainPage() {
 
   return (
-    <ConfigMapper/>
+    <InterlockMapper/>
 );
 }
 
