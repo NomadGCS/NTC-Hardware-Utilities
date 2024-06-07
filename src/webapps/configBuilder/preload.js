@@ -4,5 +4,5 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  getModules: (title) => ipcRenderer.send('get-Modules')
+  getFolder: async (folder) => ipcRenderer.invoke('get-Folder', folder)
 })

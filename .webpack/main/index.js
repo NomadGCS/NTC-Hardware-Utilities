@@ -865,6 +865,17 @@ module.exports = require("net");
 
 /***/ }),
 
+/***/ "node:fs":
+/*!**************************!*\
+  !*** external "node:fs" ***!
+  \**************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:fs");
+
+/***/ }),
+
 /***/ "node:path":
 /*!****************************!*\
   !*** external "node:path" ***!
@@ -955,6 +966,9 @@ const {
 } = __webpack_require__(/*! electron */ "electron");
 const path = __webpack_require__(/*! node:path */ "node:path");
 const fs = __webpack_require__(/*! fs */ "fs");
+const {
+  readFile
+} = __webpack_require__(/*! node:fs */ "node:fs");
 let mainWindow; // This is what is displayed on the screen
 let windows = new Set(); // This is the list of available browser windows to display
 
@@ -1002,7 +1016,6 @@ let menuTemplate = [{
     label: "Build Asset-Config",
     click: () => {
       switchWindow(CONFIGBUILDER, CONFIGBUILDER_PRELOAD);
-      mainWindow.webContents.send('update-counter', getModules());
     }
   }, {
     label: "Learn Markdown",
@@ -1139,28 +1152,17 @@ function switchWindow(webapp, preload = "") {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-// This grabs all the text files in the modules/systems folder
+// This grabs all the text files in the folder name you send it
 app.whenReady().then(() => {
-  ipcMain.handle('get-Modules', getModules);
-  //ipcMain.handle('getSytems', getSystems)
+  ipcMain.handle('get-Folder', (event, folder) => {
+    const fileContents = {};
+    fs.readdirSync(`./configurations/${folder}`).forEach(file => {
+      let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`));
+      fileContents[fileData.type] = fileData;
+    });
+    return fileContents;
+  });
 });
-function getModules() {
-  console.log('RAN GET MODULES!');
-  let modulesFolder = fs.readdirSync(path.join(__dirname, './modules'));
-  modulesFolder.forEach(modFile => {
-    console.log(modFile);
-    let readFile = fs.readdirSync(path.join(__dirname, `./modules/${modFile}`));
-    console.log(readFile);
-  });
-  return 'Hello from main!';
-}
-function getSystems() {
-  async fileName => fs.readFileSync(path.join(__dirname, fileName));
-  let modulesFolder = fs.readdirSync(path.join(__dirname, './modules'));
-  modulesFolder.forEach(modFile => {
-    console.log(modFile);
-  });
-}
 })();
 
 module.exports = __webpack_exports__;

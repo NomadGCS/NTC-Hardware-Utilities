@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
+const { readFile } = require('node:fs');
 
 let mainWindow;             // This is what is displayed on the screen
 let windows = new Set();    // This is the list of available browser windows to display
@@ -39,10 +40,7 @@ let menuTemplate = [
     label: "Apps",
     submenu: [
         { label: "Build Interlock Map", click: () => {switchWindow(INTERLOCKMAP, INTERLOCKMAP_PRELOAD)} },
-        { label: "Build Asset-Config", click: () => {
-          switchWindow(CONFIGBUILDER, CONFIGBUILDER_PRELOAD)
-          mainWindow.webContents.send('update-counter', getModules())
-        } },
+        { label: "Build Asset-Config", click: () => {switchWindow(CONFIGBUILDER, CONFIGBUILDER_PRELOAD)} },
         { label: "Learn Markdown", click: () => {switchWindow(MARKDOWN_DOCUMENTATION)} }          
     ]
   }
@@ -185,31 +183,15 @@ function switchWindow(webapp, preload = "") {
 // code. You can also put them in separate files and import them here.
 
 
-// This grabs all the text files in the modules/systems folder
+// This grabs all the text files in the folder name you send it
 app.whenReady().then(()=> {
-  
-  ipcMain.handle('get-Modules', getModules)
-  //ipcMain.handle('getSytems', getSystems)
+  ipcMain.handle('get-Folder', (event, folder) => {
+    const fileContents = {}
+    fs.readdirSync(`./configurations/${folder}`).forEach(file => {
+      let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`))
+      fileContents[fileData.type] = fileData
+    })
+    return fileContents
+  })
 })
 
-function getModules() {
-  console.log('RAN GET MODULES!')
-  let modulesFolder = fs.readdirSync(path.join(__dirname, './modules'))
-
-  modulesFolder.forEach(modFile => {
-    console.log(modFile)
-    let readFile = fs.readdirSync(path.join(__dirname, `./modules/${modFile}`))
-    console.log(readFile)
-  })
-
-  return 'Hello from main!'
-}
-
-function getSystems() {
-  async fileName => fs.readFileSync(path.join(__dirname, fileName))
-  let modulesFolder = fs.readdirSync(path.join(__dirname, './modules'))
-
-  modulesFolder.forEach(modFile => {
-    console.log(modFile)
-  })
-}
