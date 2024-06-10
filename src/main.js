@@ -1,5 +1,7 @@
 const { app, BrowserWindow, ipcMain, Menu } = require('electron');
 const path = require('node:path');
+const fs = require('fs');
+const { readFile } = require('node:fs');
 
 let mainWindow;             // This is what is displayed on the screen
 let windows = new Set();    // This is the list of available browser windows to display
@@ -179,3 +181,17 @@ function switchWindow(webapp, preload = "") {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+
+// This grabs all the text files in the folder name you send it
+app.whenReady().then(()=> {
+  ipcMain.handle('get-Folder', (event, folder) => {
+    const fileContents = {}
+    fs.readdirSync(`./configurations/${folder}`).forEach(file => {
+      let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`))
+      fileContents[fileData.type] = fileData
+    })
+    return fileContents
+  })
+})
+
