@@ -14,9 +14,7 @@ export default function ConfigBuilder() {
   return (
     <div>
       <h1>This is the future home of the config builder.</h1>
-      <button onClick={getFromMain}>Get some configs!</button>
-      <span>Modules: {}</span>
-      <span>Systems: {}</span>
+      <button onClick={getFromMain}>Get some configs in the console!</button>
     </div>
   )
 }
