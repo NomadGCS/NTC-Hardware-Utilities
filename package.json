@@ -28,7 +28,7 @@
     "css-loader": "^6.11.0",
     "electron": "30.0.6",
     "node-loader": "^2.0.0",
-    "style-loader": "^3.3.4"
+    "style-loader": "^3.3.4"    
   },
   "keywords": [],
   "author": {
@@ -40,6 +40,16 @@
     "@bmunozg/react-image-area": "^1.1.0",
     "electron-squirrel-startup": "^1.0.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@hookform/error-message": "^2.0.1",
+    "@hookform/resolvers": "^3.3.4",
+    "@mui/base": "5.0.0-beta.19",
+    "@mui/icons-material": "^5.15.4",
+    "@mui/material": "^5.15.4",
+    "@mui/utils": "^5.15.4",
+    "@mui/x-data-grid": "^6.18.7",
+    "@mui/x-date-pickers": "^6.19.0"
   }
 }
