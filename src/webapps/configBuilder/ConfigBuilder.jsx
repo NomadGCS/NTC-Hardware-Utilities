@@ -27,7 +27,7 @@ export default function ConfigBuilder() {
       </div>
 
       {/* Component Listing - For Migration from NTC into Electron */}
-      <div>
+      <div name='config-builder-component'>
         <h3>This is a listing of all the components in the config builder</h3>
 
         <ConfigBuilderPage></ConfigBuilderPage>

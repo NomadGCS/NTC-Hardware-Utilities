@@ -977,15 +977,15 @@ let windows = new Set(); // This is the list of available browser windows to dis
 // ---------------------------------------------------------------------------------------------------------------------------
 
 //  ./webapps/default/
-const DEFAULT = 'http://localhost:3000/default';
+const DEFAULT = 'http://localhost:7000/default';
 const DEFAULT_PRELOAD = 'C:\\Users\\john.bissen\\VS Projects\\NTC-Hardware-Utilities\\.webpack\\renderer\\default\\preload.js';
 
 // ./webapps/interlockMapper/
-const INTERLOCKMAP = 'http://localhost:3000/interlock_mapper';
+const INTERLOCKMAP = 'http://localhost:7000/interlock_mapper';
 const INTERLOCKMAP_PRELOAD = 'C:\\Users\\john.bissen\\VS Projects\\NTC-Hardware-Utilities\\.webpack\\renderer\\interlock_mapper\\preload.js';
 
 // ./webapps/configBuilder/
-const CONFIGBUILDER = 'http://localhost:3000/config_builder';
+const CONFIGBUILDER = 'http://localhost:7000/config_builder';
 const CONFIGBUILDER_PRELOAD = 'C:\\Users\\john.bissen\\VS Projects\\NTC-Hardware-Utilities\\.webpack\\renderer\\config_builder\\preload.js';
 const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis";
 

@@ -32,6 +32,7 @@ module.exports = {
     {
       name: '@electron-forge/plugin-webpack',
       config: {
+        port: 7000, // so we dont interfere with ntc web server
         mainConfig: './webpack.main.config.js',
         renderer: {
           config: './webpack.renderer.config.js',
