@@ -579,7 +579,6 @@ export default function ConfigBuilderPage() {
                                 </IconButton>
                             </div>
                         </Stack>
-
                     </div>
                     <div className="json-code">
                         <pre>

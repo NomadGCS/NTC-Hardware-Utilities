@@ -16,25 +16,10 @@ export default function ConfigBuilder() {
 
   console.log(modules)
   console.log(systems)
-  return (
-    <div>
-      <h1>This is the future home of the config builder.</h1>
-      <button onClick={getFromMain}>Get some configs in the console!</button>
-      
-      {/* Separator */}
-      <div style={{margin: '4em 0'}}>
-        <hr></hr>
-      </div>
-
-      {/* Component Listing - For Migration from NTC into Electron */}
-      <div name='config-builder-component'>
-        <h3>This is a listing of all the components in the config builder</h3>
-
-        <ConfigBuilderPage></ConfigBuilderPage>
-
-      </div>
-
-    </div>
+  return (       
+    <div name='config-builder-component' style={{height:'100%', background: 'white', borderRadius: '7px'}}>      
+      <ConfigBuilderPage></ConfigBuilderPage>
+    </div>   
   )
 }
 
