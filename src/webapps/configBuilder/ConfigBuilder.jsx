@@ -1,4 +1,9 @@
 import React, {useState} from 'react'
+import ConfigBuilderPage from './src/ConfigBuilderPage.jsx';
+
+import {Box, Stack} from "@mui/material";
+
+
 
 export default function ConfigBuilder() {
   const [modules, setModules] = useState(null)
@@ -11,11 +16,10 @@ export default function ConfigBuilder() {
 
   console.log(modules)
   console.log(systems)
-  return (
-    <div>
-      <h1>This is the future home of the config builder.</h1>
-      <button onClick={getFromMain}>Get some configs in the console!</button>
-    </div>
+  return (       
+    <div name='config-builder-component' style={{height:'100%', background: 'white', borderRadius: '7px'}}>      
+      <ConfigBuilderPage></ConfigBuilderPage>
+    </div>   
   )
 }
 
