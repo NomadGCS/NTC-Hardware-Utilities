@@ -40,10 +40,12 @@ export default function InterlockMapper() {
     }
 
     const copyCoords = async () => {
-        let coords =`x: ${areas[0]?.x || 0},
-        y: ${areas[0]?.y || 0},
-        height: ${areas[0]?.height || 0},
-        width: ${areas[0]?.width || 0}`
+        let coords =`
+        "x": ${areas[0]?.x || 0},
+        "y": ${areas[0]?.y || 0},
+        "height": ${areas[0]?.height || 0},
+        "width": ${areas[0]?.width || 0},
+        "rotation": ${areas[0]?.rotation || 0}`
         await navigator.clipboard.writeText(coords);
         setShowConfirmation(true);
     }
@@ -110,6 +112,8 @@ export default function InterlockMapper() {
                   height: {areas[0]?.height || 0}
                   <br/>
                   width: {areas[0]?.width || 0}
+                  <br/>
+                  rotation: {areas[0]?.rotation || 0}
                 </p>
                 <button onClick={copyCoords}>Copy coordinates</button>
               </fieldset>
