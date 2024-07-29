@@ -49,7 +49,7 @@
     /*border-radius: 7px;*/
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
-    display: grid;
+    /* display: grid; */
     grid-template-rows: 60px 1fr 1fr 60px;
 
     padding: 5px 15px;
@@ -103,7 +103,11 @@
 .heading {
     text-transform: uppercase;
     margin-left: 6px;
-    font-weight:600;
+    font-weight:600;    
+}
+
+.heading button { 
+    cursor: pointer;
 }
 
 .builder-form {
@@ -158,7 +162,7 @@
 
 .copy-to-clipboard {
     position: absolute;
-    right: 10px;
+    right: 18px;
     top: 10px;
     z-index: 0;                 /* stay below builder-form  */
 }
@@ -171,7 +175,7 @@
     z-index: 5;
 }
 .modules-list, .systems-list {
-    width: 368px;
+    /* width: 368px; */
     position: relative;
     z-index: 0;
     /*margin-top: -4px;*/
@@ -180,6 +184,8 @@
     overflow-y: scroll;
     box-shadow: inset 0 -3px 4px #bbb;
     border-radius: 4px;
+
+    /* overflow-x: scroll; */
 }
 
 .module-link, .system-link {

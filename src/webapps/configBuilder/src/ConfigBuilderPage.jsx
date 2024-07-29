@@ -17,7 +17,9 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // JS
 import ConfigViewButtonGroup from "./misc/ConfigViewButtonGroup.jsx";
-import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions'
+import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx";
+import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
+import {loadTranslations, sortArray} from "./translation/TranslationUtils";
 
 // Data
 import { configFileSample } from "./data/configUIData";
@@ -71,16 +73,40 @@ export default function ConfigBuilderPage() {
         const configFileSample = configData?.configFileSample ?? null;
         if (configFileSample) {
             console.log(configFileSample)
-            //setConfigData(configFileSample);
-            //loadConfigFile(configFileSample);
+            setConfigData(configFileSample);
+            loadConfigFile(configFileSample);
         }
     }, [])
 
 
+    // just for debugging, so we know modules and systems got loaded
+    useEffect(() =>{
+        console.log('Systems: ', systems);
+        console.log('Modules: ', modules);
+        console.log('Schemas: ', moduleSchemas);
+    }, [systems, modules])
+
+
     // FUNCTIONS
-    const handleAddClick = () => {
-        console.log('handleAddClick')
-    }    
+
+    /**
+     * Summary:  Called when user is trying to create a new MODULE or SYSTEM.  Displays a modal for user to select the
+     *           type (Interlock, HVAC, etc)
+     * @param type: MODULE or SYSTEM
+     */
+    const handleAddClick = (type) => {
+
+        // Prevent user from opening a new form before the current one is saved.
+        if (showBuilderForm) {
+            alert('Edit form is already open.  Submit (or close) the form to open another system or module.')
+            return;
+        }
+
+        setFormType(type);
+        setShowCreateNew(true);
+    }
+
+  
     const handleImportModal = () => {
         console.log('handleImportModal')
         alert('Import files')
@@ -168,27 +194,240 @@ export default function ConfigBuilderPage() {
     }
 
 
+    /**
+     * Summary:  Creates an object containing all the lists the form and inputs may need.
+     */
+    const buildFormOptions = (config) => {
+        // available systems - Used for dropdowns and multi-selects
+        const existingSystems = Object.entries(config.systems).map(item => {
+            return {
+                label: item[1].meta.id,
+                value: item[0],
+                type: item[1].type
+            }
+        });
+
+        //console.log('SchemaData: ', schemaData);
+        //console.log('SystemSchemas: ', systemSchemas);
+
+        let systemTypes = [];        
+        if (systemSchemas) {
+            // available schema types for systems
+            systemTypes = systemSchemas.map((item) => {
+                return {label: item, value: item}
+            });
+            systemTypes = sortArray(systemTypes);
+        }
+
+        let moduleTypes = [];
+        if (moduleSchemas) {
+            // available schema types for modules            
+            moduleTypes = moduleSchemas.map((item) => {
+                return {label: item, value: item}
+            });
+            moduleTypes = sortArray(moduleTypes);
+        }
+
+        /// STOPPED DOING IT THIS WAY BECAUSE MODULESCHEMAS HAD OLD VALUES.....
+        // const moduleTypes = moduleSchemas.map((item) => {
+        //     return { label: item, value: item}
+        // });
+
+        const sensorTypes = ["temperature", "dust", "humidity", "noise", "smoke", "vibration"].map((item) => {
+            return {label: item, value: item}
+        });;
+
+        // translation lists -> going to need these later and only want to load once
+        //const translationsList = loadTranslations();  // TODO -> this needs to be fixed
+        const translationsList = [];
+
+        // This is used by the Form to populate dropdowns and multi-selects.
+        setFormOptions({
+            existingSystems,
+            systemTypes,
+            moduleTypes,
+            translationsList,
+            sensorTypes
+        })
+    }
+
+
+    /**
+         * Summary:  Called when user is creating a new Module/System, at this point they have selected the new type (interlock, hvac, etc)
+         *           and this opens the edit form.
+         * @param val: represents a schema type ('light', 'awning');
+         */
+    const createNewCallback = (val) => {
+
+        // close modal
+        setShowCreateNew(false);
+        setShowBuilderForm(false);
+        setExistingItem(false);
+
+        console.log('val: ', val);
+        if (!val) {
+            return;
+        }
+
+        // set up new name
+        const titleCase = str => `${str[0].toUpperCase()}${str.slice(1).toLowerCase()}`
+        const name = titleCase(val);
+
+        const id = crypto.randomUUID();
+        setSelectedId(id);
+        const newObject = {
+            id,
+            meta: {
+                id: (formType === MODULE) ? `${name} Module` : `${name} System`
+            },
+            type: val
+        }
+        setSelectedData(newObject);
+
+        // show the edit form
+        setTimeout( () => {
+            setShowBuilderForm(true);
+        }, 350)
+    }
+
+
+    /**
+     * Summary:  Used to open edit form for an existing Module or System
+     * @param id:  ID of module or system
+     * @param type: MODULE or SYSTEM
+     */
+    const handleMenuItemClick = (id, type) => {
+
+        setShowBuilderForm(false);
+        setExistingItem(true);
+
+        setSelectedId(id);
+        setFormType(type);
+
+        if (type == MODULE) {
+            let module = modules.find(s => s.id == id);
+            setSelectedData(module);
+        }
+        else {
+            let system = systems.find(s => s.id == id);
+            setSelectedData(system);
+        }
+
+        // animate the closing/opening of the form.
+        setTimeout( () => {
+            setShowBuilderForm(true);
+        }, 350)
+    }
+
+
+    /**
+     * Checks if schema exists based on name text passed in. 
+     * @param {*} isModule 
+     * @param {*} name 
+     * @returns 
+     */
+    const doesSchemaExist = (isModule, name) => {
+        return (isModule) ? moduleSchemas.includes(name) : systemSchemas.includes(name);
+    }
+
+
+    /**
+     * Displays system/module name or related warnings.
+     * @param {*} module 
+     * @returns 
+     */
+    const renderModuleName = (module) => {
+        const existingSchema = doesSchemaExist(true, module.type);
+        if (!existingSchema) {
+            return (
+                <div style={{fontWeight: '500', padding: '5px', color: 'firebrick', opacity: '0.3'}} title="This module does not have a schema so it cannot be edited.">{module.meta.id}</div>
+            );
+        }
+
+        const hasSystems = module?.systemIds?.length > 0;
+        if (!hasSystems) {
+            return (
+                <div style={{fontWeight: '500', padding: '5px', color: 'orangered', opacity: '0.5'}} title="This module has no systems!">{module.meta.id}</div>
+            );
+        }
+
+        return (
+                <div style={{fontWeight: '500', padding: '5px'}}>{module.meta.id}</div>
+        );
+    }
+
    
     // RENDER
     return (
         <div>
+
+            {showCreateNew &&
+                <ConfigBuilderCreateNewModal
+                    options={formOptions}
+                    maxWidth={'lg'}
+                    open={true} handleClose={() => setShowCreateNew(false)}
+                    handleConfirm={createNewCallback}
+                    handleCancel={() => setShowCreateNew(false)}
+                    confirmMessage="Select the type to create"
+                    errors={importErrors}
+                    type={formType}
+                />
+            }
+
             <div className='builder-content'>
                 <Box className='side-menu'>
                     {/* MODULES */}
                     <Box className="modules">
                         <Stack direction="row" className='section-title'>
-                            <div className="heading">Modules</div>
-                            <AddBoxOutlinedIcon onClick={handleAddClick}/>
-                            {/* <AddBoxOutlinedIcon onClick={() => handleAddClick(MODULE)}/> */}
+                            <div className="heading">Modules</div>                            
+                            <AddBoxOutlinedIcon onClick={() => handleAddClick(MODULE)}/>                            
                         </Stack>
+                        <div className='systems-list'>
+                        {modules.map((item, index) => (
+                            <div key={`module-item-${index}`} className={`module-link ${item.id === selectedId ? "selected" : ""}`} onClick={() => handleMenuItemClick(item.id, 0) }>
+                                <Stack direction="row" sx={{alignItems:"center", position: "relative"}}>
+                                    <SpaceDashboardOutlinedIcon sx={{margin:" 0 10px", opacity: "0.5"}}/>
+
+                                    {/*  DOES SCHEMA EXIST?  */}                                    
+                                    {renderModuleName(item)}                                    
+                                    <div style={{fontWeight: '600', fontSize: '0.7rem', padding: '5px', position: "absolute", right:"10px"}}>
+                                        <Stack direction="row" sx={{alignItems: "center", }}>
+                                            {item?.systemIds?.length > 0 &&
+                                                <>
+                                                    <ViewInArOutlinedIcon sx={{margin:"-0.0rem", scale: "0.5", color: 'gray' }}/>
+                                                    {item?.systemIds?.length}
+                                                </>
+                                            }
+                                        </Stack>
+                                    </div>
+                                </Stack>
+                            </div>
+                        ))}
+                    </div>
                     </Box>
                     {/* SYSTEMS*/}
                     <Box className='systems'>
                         <Stack direction="row"  className='section-title'>
-                            <div className="heading">Systems</div>
-                            <AddBoxOutlinedIcon onClick={handleAddClick}/>
-                            {/* <AddBoxOutlinedIcon onClick={() => handleAddClick(SYSTEM)}/> */}
+                            <div className="heading">Systems</div>                            
+                            <AddBoxOutlinedIcon onClick={() => handleAddClick(SYSTEM)}/>
                         </Stack>
+                        <div className='systems-list'>
+                        {systems.map((item,index) => (
+                            <div key={`system-item-${index}`}  className={`system-link ${item.id === selectedId ? "selected" : ""}`} onClick={() => handleMenuItemClick(item.id, 1) }>
+                                <Stack direction="row" sx={{alignItems:"center"}}>
+                                    <ViewInArOutlinedIcon sx={{margin:" 0 10px", opacity: "0.5", scale: "0.8", color: 'firebrick'}}/>
+
+                                    {/*  DOES SCHEMA EXIST?  */}
+                                    {systemSchemas.includes(item.type) ?
+                                        <div style={{fontWeight: '500', padding: '5px', overflow: 'hidden'}}>{item.meta.id}</div> :
+                                        <div style={{fontWeight: '500', padding: '5px', color: 'firebrick', opacity: '0.3'}}>{item.meta.id}</div>
+                                    }
+
+                                    {/*<div style={{fontWeight: '500', padding: '5px'}}>{item.meta.id}</div>*/}
+                                </Stack>
+                            </div>
+                        ))}
+                    </div>
                     </Box>
                 </Box>
                 <div className='content'>
@@ -229,17 +468,15 @@ export default function ConfigBuilderPage() {
                                     disabled
                                     id="jsonResult"
                                     width="auto"
-                                    height="auto"
-                                    value="<div>this is some code</div>"
-                                    // value={JSON.stringify(configData, null, 2)}
+                                    height="auto"                                    
+                                    value={JSON.stringify(configData, null, 2)}
                                 />
                             }
                             {showSchema &&
                                 <textarea
                                     disabled
-                                    id="jsonResult"
-                                    value="<div>this is the schema</div>"
-                                    // value={JSON.stringify(schemaData, null, 2)}
+                                    id="jsonResult"                                    
+                                    value={JSON.stringify(schemaData, null, 2)}
                                 />
                             }
                         </pre>
