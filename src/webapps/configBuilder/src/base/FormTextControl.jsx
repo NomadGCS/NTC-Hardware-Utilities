@@ -5,18 +5,19 @@ import TextField from '@mui/material/TextField'
 // @ts-ignore
 import { ErrorMessage } from '@hookform/error-message'
 
-interface FormTextControlProps {
-    register?: any,
-    errors?: any,
-    id: string,
-    name: string,
-    label: string,
-    defaultValue?: string,
-    readonly?: boolean,
-    type?: string,
-    required?: boolean,
-    isNumber?: boolean
-}
+
+// interface FormTextControlProps {
+//     register?: any,
+//     errors?: any,
+//     id: string,
+//     name: string,
+//     label: string,
+//     defaultValue?: string,
+//     readonly?: boolean,
+//     type?: string,
+//     required?: boolean,
+//     isNumber?: boolean
+// }
 
 const normalText = 'black';
 const errorText = 'firebrick'
@@ -32,7 +33,7 @@ const FormTextControl = ({
     type,
     required = true,
     isNumber = false
-}: FormTextControlProps) => {
+}) => {
     // const theme = useTheme()
     const isError = !!errors[name]
     const textColor = isError ? errorText : normalText

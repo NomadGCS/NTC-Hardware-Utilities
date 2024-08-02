@@ -72,12 +72,24 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
             setFormOptions(updatedOptions);
         }
 
+        // HACK:  Fix issue where schema is nested in object
+        const configSchemaSample = configFormSchema?.configFormSchema ?? null;
+        if (configSchemaSample) {
+            //setSchemaData(schemaData.configFormSchema);
+            console.log('......fixing schema......')
+            configFormSchema = configSchemaSample;
+        }
+
     }, [])
 
 
     useEffect( () => {
         // Reset Form Error State
         setFormErrors({ state: false, errors: ''})
+
+        // if (!data || !data.type) {
+        //     return;
+        // }
 
 
         // TODO:  Break each block of sections into separate functions
@@ -86,7 +98,7 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
         // MAKE SURE WE HAVE A VALID SCHEMA
         // ------------------------------------------------------------------------------------------------------
 
-        //console.log('jb ConfigBuilderForm - useEffect: ', configFormSchema)
+        console.log('jb ConfigBuilderForm - useEffect: ', configFormSchema)
 
         if (!configFormSchema) {
             console.error('There is no schema!')

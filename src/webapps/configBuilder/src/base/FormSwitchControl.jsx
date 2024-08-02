@@ -8,18 +8,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { Controller } from "react-hook-form";
 import { Radio, RadioGroup, useTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Theme } from "../../../../generated/client/Theme";
+// import { Theme } from "../../../../generated/client/Theme";
 
 
-interface NTCSwitchProps {
-    onChange: any
-    checked: boolean
-}
+// interface NTCSwitchProps {
+//     onChange: any
+//     checked: boolean
+// }
 
 
-const NTCSwitch = styled((props: NTCSwitchProps) => (
+const NTCSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple checked={props.checked} {...props} />
-))<NTCSwitchProps>(({ theme }) => ({
+))(({ theme }) => ({
     width: 29,
     height: 16,
     padding: 0,
@@ -31,7 +31,7 @@ const NTCSwitch = styled((props: NTCSwitchProps) => (
         '&.Mui-checked': {
             transform: 'translateX(16px)',
             '& + .MuiSwitch-track': {
-                backgroundColor: theme.palette.custom.nomadRed,
+                backgroundColor: '#a8d3eb',
                 opacity: 1,
                 border: 0
             },
@@ -67,19 +67,19 @@ const NTCSwitch = styled((props: NTCSwitchProps) => (
 }))
 
 
-interface FormSwitchControlProps {
-    register?: any,
-    control?: any,
-    errors?: any,
-    // id: string,
-    name: string,
-    label: string,
-    // labelPlacement: string,
-    checked: boolean,
-    // whenChanged?: any
-}
+// interface FormSwitchControlProps {
+//     register?: any,
+//     control?: any,
+//     errors?: any,
+//     // id: string,
+//     name: string,
+//     label: string,
+//     // labelPlacement: string,
+//     checked: boolean,
+//     // whenChanged?: any
+// }
 
-const FormSwitchControl = ({register, control, errors, name, label, checked} : FormSwitchControlProps) => {
+const FormSwitchControl = ({register, control, errors, name, label, checked}) => {
 
 // const FormSwitchControl = ({control, errors, id, name, label, labelPlacement, checked, whenChanged} : FormSwitchControlProps) => {
     const theme = useTheme();
@@ -90,7 +90,7 @@ const FormSwitchControl = ({register, control, errors, name, label, checked} : F
     // const color = isError ? theme.palette.custom.nomadRed : `${theme.palette.custom.moduleTitle} !important`
     // const textColor = isError ? theme.palette.custom.nomadRed : `${theme.palette.custom.moduleTitle} !important`
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event) => {
         // whenChanged();
         //console.log('jb handleChange: ', isChecked);
         setIsChecked(!isChecked);

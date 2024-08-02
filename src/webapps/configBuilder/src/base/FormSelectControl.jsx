@@ -1,25 +1,25 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { Select, useTheme } from '@mui/material'
-import useI18n from '../../../../i18n/useI18n'
+// import useI18n from '../../../../i18n/useI18n'
 import { Controller } from 'react-hook-form'
 import Typography from '@mui/material/Typography'
 import { ErrorMessage } from '@hookform/error-message'
 import { SelectChangeEvent } from '@mui/material/Select'
 
-interface FormSelectControlProps {
-    register?: any,
-    control?: any,
-    errors?: any,
-    id: string,
-    name: string,
-    options: { label: string, value: string, disabled?: boolean }[],
-    label: string,
-    defaultOptionLabel: string,
-    defaultValue?: string,
-    readonly?: boolean,
-    type?: string
-    handleChange?
-}
+// interface FormSelectControlProps {
+//     register?: any,
+//     control?: any,
+//     errors?: any,
+//     id: string,
+//     name: string,
+//     options: { label: string, value: string, disabled?: boolean }[],
+//     label: string,
+//     defaultOptionLabel: string,
+//     defaultValue?: string,
+//     readonly?: boolean,
+//     type?: string
+//     handleChange?
+// }
 
 const FormSelectControl = ({
     register,
@@ -33,14 +33,14 @@ const FormSelectControl = ({
     options,
     readonly,
     handleChange
-}: FormSelectControlProps) => {
+}) => {
     const theme = useTheme()
-    const { t } = useI18n()
+    // const { t } = useI18n()
     const isError = !!errors[name]
 
     const [value, setValue] = useState(defaultValue)
 
-    const onChange = (event: SelectChangeEvent, field) => {
+    const onChange = (event, field) => {
 
         const selectedValue = options.find(s=> s.value == event.target.value);
 
@@ -74,9 +74,9 @@ const FormSelectControl = ({
                             // }}
                             value={value}
                             sx={{
-                                backgroundColor: theme.palette.primary.main,
+                                backgroundColor: '#fff', //theme.palette.primary.main,
                                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                                    border: theme.palette.custom.moduleBorder
+                                    border: '1px #c2c2c2 solid'
                                 }
                             }}>
 

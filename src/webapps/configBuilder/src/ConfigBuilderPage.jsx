@@ -320,6 +320,71 @@ export default function ConfigBuilderPage() {
         }, 350)
     }
 
+    
+    /**
+     * Summary:  Updates the master JSON after edit form has been saved
+     * @param updatedData
+     */
+    const updateFormCallback = (updatedData) => {
+        try {
+            let newConfigData = {...configData};
+
+            if (updatedData.delete) {
+                (formType === MODULE) ? delete newConfigData.modules[updatedData.id] : delete newConfigData.systems[updatedData.id]
+            } else {
+                if (formType === MODULE) {
+                    // Update Modules
+                    if (!configData.modules) {
+                        newConfigData.modules = {};
+                    }
+                    newConfigData.modules[updatedData.id] = updatedData;
+
+                } else {
+                    // Update Systems
+                    if (!configData.systems) {
+                        newConfigData.systems = {};
+                    }
+                    newConfigData.systems[updatedData.id] = updatedData;
+                }
+            }
+
+            // Save change to state
+            setConfigData(newConfigData);
+
+            // Close the form
+            handleCancelForm();
+        }
+        catch(e) {
+            const message = `Error caught in updateSystem - ${e.message}`;
+            console.error(message);
+        }
+    }
+
+    
+    /**
+     * Summary:  Resets form so it is ready to open again.
+     */
+    const handleCancelForm = () => {
+        setShowBuilderForm(false);
+        setSelectedId(-1);
+        setSelectedData(null)
+        setExistingItem(false);
+        setFormType(-1);
+    }
+
+
+    
+    const interlockMapUpdate = (getSys) => {
+        for (let i =0; i < systems.length; i++) {
+            if (systems[i].meta.id === getSys) return systems[i];
+        }
+    }
+
+    
+    const getModuleSystems = () => {
+        return modules.filter((mod) => mod.type === 'interlock').flatMap((mod) => mod.systemIds)
+    }
+
 
     /**
      * Checks if schema exists based on name text passed in. 
@@ -432,10 +497,13 @@ export default function ConfigBuilderPage() {
                     </Box>
                 </Box>
                 <div className='content'>
-                    <div className="builder-form">
-                        {/* CONFIG BUILDER FORM GOES IN HERE --> May need to put original CSS back */}
-                        <ConfigBuilderForm id={selectedId} type={formType} data={selectedData} options={formOptions} configFormSchema={schemaData} afterSubmit={updateFormCallback} cancelAction={handleCancelForm} interlockMapUpdate={interlockMapUpdate} getModuleSystems={getModuleSystems}/>
-                    </div>
+                    {/* FORM */}
+                    {showBuilderForm &&
+                        <div className="builder-form">
+                            {/* CONFIG BUILDER FORM GOES IN HERE --> May need to put original CSS back */}
+                            <ConfigBuilderForm id={selectedId} type={formType} data={selectedData} options={formOptions} configFormSchema={schemaData} afterSubmit={updateFormCallback} cancelAction={handleCancelForm} interlockMapUpdate={interlockMapUpdate} getModuleSystems={getModuleSystems}/>
+                        </div>
+                    }                    
                     <div className="json-layout">
                         <div className="json-header">
                             <Stack direction="row" sx={{justifyContent: 'space-between', alignItems: 'center'}}>

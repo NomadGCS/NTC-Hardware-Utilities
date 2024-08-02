@@ -1,19 +1,22 @@
 import NTCButton from "./NTCButton.jsx";
-import { useTheme } from '@mui/material'
+//import { useTheme } from '@mui/material'
 import TrashIcon from "@mui/icons-material/Delete";
 //import { FormMode } from "../forms/Forms";
-import ConfirmModalDialog from "../modals/ConfirmModalDialog";
+import ConfirmModalDialog from "./modals/ConfirmModalDialog.jsx";
 import React, { useState } from "react";
 import IconButton from "@mui/material/IconButton";
 
 
-enum FormMode {
-    CREATE = 'create',
-    EDIT = 'edit',
-    VIEW = 'view',
-    CLONE = 'clone',
-    DELETE = 'delete'
-}
+// enum FormMode {
+//     CREATE = 'create',
+//     EDIT = 'edit',
+//     VIEW = 'view',
+//     CLONE = 'clone',
+//     DELETE = 'delete'
+// }
+
+const VIEW = 0;
+const DELETE = 1;
 
 /**
  * Button used for Delete actions.  Includes a confirm/cancel modal.
@@ -26,34 +29,34 @@ enum FormMode {
  */
 export default function DeleteButton({confirmAction, buttonText, modalTitle, modalMessage }) {
 
-    const theme = useTheme()
-    const [mode, setFormMode] = useState<FormMode>(FormMode.VIEW)
+    //const theme = useTheme()
+    const [mode, setFormMode] = useState(VIEW)
 
     return (
         <>
             {buttonText &&
             <NTCButton text={buttonText} endIcon={<TrashIcon/>}
-                       onClick={() => setFormMode(FormMode.DELETE)}
-                       backgroundColor={theme.palette.custom.nomadRed}
-                       sx={{ color: theme.palette.custom.whiteText }}
+                       onClick={() => setFormMode(DELETE)}
+                       backgroundColor='#CC2027'
+                       sx={{ color: '#fff' }}
             />
             }
             {!buttonText &&
                 <IconButton
                     aria-label="delete"
-                    sx={{margin: '10px', color: theme.palette.custom.nomadRed}}
-                    onClick={() => setFormMode(FormMode.DELETE)}
+                    sx={{margin: '10px', color: '#CC2027'}}
+                    onClick={() => setFormMode(DELETE)}
                 >
                     <TrashIcon></TrashIcon>
                 </IconButton>
             }
 
             {/* When user clicks delete button this Modal is displayed. */}
-            {mode == FormMode.DELETE &&
-            <ConfirmModalDialog open={true} handleClose={() => setFormMode(FormMode.VIEW)}
+            {mode == DELETE &&
+            <ConfirmModalDialog open={true} handleClose={() => setFormMode(VIEW)}
                                 modalTitle={modalTitle}
-                                handleConfirm={ () => { confirmAction(); setFormMode(FormMode.VIEW)} }
-                                handleCancel={() => setFormMode(FormMode.VIEW)}
+                                handleConfirm={ () => { confirmAction(); setFormMode(VIEW)} }
+                                handleCancel={() => setFormMode(VIEW)}
                                 confirmMessage={modalMessage} />
             }
         </>

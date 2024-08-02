@@ -1,7 +1,7 @@
 import React from 'react'
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import {FormSelectControl} from "../base/FormSelectControl.tsx";
+import {FormSelectControl} from "../base/FormSelectControl.jsx";
 import {updateDataAndHOC} from "../util/configBuilderUtils";
 import NumberInput from "./NumberInput.jsx";
 

@@ -11,15 +11,15 @@ import Typography from '@mui/material/Typography'
 import { Controller } from 'react-hook-form'
 import { SelectChangeEvent } from "@mui/material/Select";
 
-interface FormMultiSelectControlProps {
-    control?: any,
-    errors?: any,
-    name: string,
-    label: string,
-    options: { label: string, value: string, disabled?: boolean }[],
-    readonly?: boolean,
-    defaultValues?: any
-}
+// interface FormMultiSelectControlProps {
+//     control?: any,
+//     errors?: any,
+//     name: string,
+//     label: string,
+//     options: { label: string, value: string, disabled?: boolean }[],
+//     readonly?: boolean,
+//     defaultValues?: any
+// }
 
 const prepareSelectedList = (options, selectedValues) => {
     return options.filter((option) => selectedValues.includes(option.value))
@@ -36,11 +36,11 @@ const FormMultiSelectControl = ({
     options = [],
     readonly,
     defaultValues
-}: FormMultiSelectControlProps) => {
+}) => {
 
     const theme = useTheme()
     const isError = errors[name] ? true : false
-    const color = isError ? theme.palette.custom.nomadRed : `${theme.palette.custom.moduleTitle} !important`
+    const color = isError ? theme.palette.custom.nomadRed : `#000 !important`
 
     const [value, setValue] = useState(defaultValues)
 
@@ -72,7 +72,7 @@ const FormMultiSelectControl = ({
                                     style={{ marginRight: 8 }}
                                     checked={selected}
                                     sx={{
-                                        '&.Mui-checked': { color: `${theme.palette.custom.nomadRed} !important` }
+                                        '&.Mui-checked': { color: `#CC2027 !important` }
                                     }}
                                 />
                                 {option.label}

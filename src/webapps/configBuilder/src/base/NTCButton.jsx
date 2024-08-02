@@ -64,19 +64,19 @@ export default function NTCButton({
 
     return (
         <Button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} size={'medium'} variant={'contained'} disabled={disabled} aria-label={`${text} ${additionalText}`} sx={{
-            ...sx, // Call extra styles
-            ...commonButtonStyles, // Import common button styles
-            backgroundColor: backgroundColor ? backgroundColor : theme.palette.custom.contrastButton,
-            '&:hover': {
-                ...commonHoverStyles, // Import common hover styles
-                backgroundColor: backgroundColor ? backgroundColor : theme.palette.custom.buttonHoverColor
-            }
-        }}
-                startIcon={startIcon}
-                endIcon={endIcon}
-                onClick={onClick}>
+                ...sx, // Call extra styles
+                ...commonButtonStyles, // Import common button styles
+                backgroundColor: backgroundColor ? backgroundColor : theme.palette.custom.contrastButton,
+                '&:hover': {
+                    ...commonHoverStyles, // Import common hover styles
+                    backgroundColor: backgroundColor ? backgroundColor : theme.palette.custom.buttonHoverColor
+                }
+            }}
+        startIcon={startIcon}
+        endIcon={endIcon}
+        onClick={onClick}>
             {children}
-            <Typography sx={{ color: theme.palette.custom.whiteText, ...style }}>
+            <Typography sx={{ color: 'white', ...style }}>
                 {text}
                 {additionalText &&
                     <>

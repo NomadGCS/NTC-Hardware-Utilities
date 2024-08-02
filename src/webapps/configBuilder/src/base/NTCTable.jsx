@@ -16,10 +16,10 @@ export const NTCTableRow = ({ children }) => {
     return (
         <TableRow sx={{
             '&:nth-of-type(even)': {
-                backgroundColor: theme.palette.primary.main
+                backgroundColor: '#FFF' //theme.palette.primary.main
             },
             '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.custom.oddTableStripe
+                backgroundColor: '#F6F6F6' //theme.palette.custom.oddTableStripe
             }, '&:last-child td, &:last-child th': { border: 0 }
         }}>
             {children}

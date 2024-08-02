@@ -39,9 +39,9 @@ export default function InterlockMap({data, rhf}){
     }
 
     const buttonColor = (name) => {
-        if (currentInterlock === name) return theme.palette.custom.nomadRed
-        else if (interlocks[name].length) return theme.palette.custom.sliderGreen
-        return theme.palette.custom.contrastButton
+        if (currentInterlock === name) return '#CC2027'
+        else if (interlocks[name].length) return '#69be28'
+        return '#838383';
     }
 
     const openModelCheck = () => {
@@ -123,7 +123,7 @@ export default function InterlockMap({data, rhf}){
             <NTCButton
                 onClick={openModelCheck}
                 text={data.value ? 'Edit Interlock Map' : 'Add interlock Map'}
-                backgroundColor={data.value ? theme.palette.custom.sliderGreen : theme.palette.custom.nomadRed}
+                backgroundColor={data.value ? '#69be28' : '#CC2027'}
             />
         </div>
     )

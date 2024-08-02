@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Box, Stack} from "@mui/material";
-import DeleteButton from "../base/DeleteButton.tsx";
+import DeleteButton from "../base/DeleteButton.jsx";
 import UnitBlockBitInput from "./UnitBlockBitInput.jsx";
 import HardwareEventInput from "./HardwareEventInput.jsx";
 import Spacer from "../misc/Spacer.jsx";

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import {Box, Stack} from "@mui/material";
-import DeleteButton from "../base/DeleteButton.tsx";
+import DeleteButton from "../base/DeleteButton.jsx";
 import FilterInput from "./FilterInput.jsx";
 import HardwareEventInput from "./HardwareEventInput.jsx"
 import Spacer from "../misc/Spacer.jsx";
 import ConfigFormElement from "../misc/ConfigFormElement.jsx";
-import FormTextControl from "../base/FormTextControl.tsx";
+import FormTextControl from "../base/FormTextControl.jsx";
 import NameInput from "./NameInput.jsx";
 import SystemDropdown from "./SystemDropdown.jsx";
 import TranslationInput from "../translation/TranslationInput.jsx";

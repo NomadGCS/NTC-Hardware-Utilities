@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 // import FormTextControl from "../../../inputs/forms/controls/FormTextControl";
-import FormTextControl from '../base/FormTextControl.tsx';
-import {FormSelectControl} from "../base/FormSelectControl.tsx";
+import FormTextControl from '../base/FormTextControl.jsx';
+import {FormSelectControl} from "../base/FormSelectControl.jsx";
 import {updateDataAndHOC} from "../util/configBuilderUtils";
 
 const Label = ({children}) => {

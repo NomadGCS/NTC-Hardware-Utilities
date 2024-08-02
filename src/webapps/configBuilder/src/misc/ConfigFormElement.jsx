@@ -2,15 +2,15 @@ import React, {useState, useEffect, useContext} from 'react'
 
 // MUI
 import Box from '@mui/material/Box';
-import {useTheme} from "@mui/material";
+//import {useTheme} from "@mui/material";
 
 // NTC
-import FormTextControl from "../base/FormTextControl.tsx";
-import FormSwitchControl from "../base/FormSwitchControl.tsx";
+import FormTextControl from "../base/FormTextControl.jsx";
+import FormSwitchControl from "../base/FormSwitchControl.jsx";
 
 // EXTRAS
-import {FormMultiSelectControl} from "../base/FormMultiSelectControl.tsx";
-import {FormSelectControl} from "../base/FormSelectControl.tsx";
+import {FormMultiSelectControl} from "../base/FormMultiSelectControl.jsx";
+import {FormSelectControl} from "../base/FormSelectControl.jsx";
 import {buildDropdownDefaults} from "../util/configBuilderUtils";
 import ConfigDataTable from "./ConfigDataTable.jsx";
 import HardwareInput from "../inputs/HardwareInput.jsx";
@@ -35,7 +35,7 @@ import InterlockMap from "../interlockMap/InterlockMap.jsx";
 export default function ConfigFormElement({data, options, rhf, getModuleSystems}) {
     const {label, type, path, value, values } = data;
     const {register, unregister, setValue, errors, control } = rhf;
-    const theme = useTheme()
+    //const theme = useTheme()
 
     function factory(type, label, path, value) {
 
@@ -60,7 +60,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
             </>
         }
         else if (type === "separator") {
-            const nomadRed= theme.palette.custom.nomadRed;
+            const nomadRed = "#CC2027";
             const glacierBlue = "#0079bd";
             return <Box sx={{margin: '10px 0', border: `14px solid ${glacierBlue}`, borderRadius: '4px'}}></Box>
         }
