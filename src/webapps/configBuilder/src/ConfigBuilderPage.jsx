@@ -343,11 +343,20 @@ export default function ConfigBuilderPage() {
      * @param updatedData
      */
     const updateFormCallback = (updatedData) => {
+        console.log('UpdateFormCallBack: ', selectedId, updatedData.id);
+
         try {
             let newConfigData = {...configData};
+            
+            // if the display name changes, that will become the new id, so to avoid duplicates, check if it changed and 
+            // delete the old object if it has.
+            const hasIdChanged = selectedId !== updatedData.id;
+            if (hasIdChanged) {
+                (formType === MODULE) ? delete newConfigData.modules[selectedId] : delete newConfigData.systems[selectedId];
+            }
 
             if (updatedData.delete) {
-                (formType === MODULE) ? delete newConfigData.modules[updatedData.id] : delete newConfigData.systems[updatedData.id]
+                (formType === MODULE) ? delete newConfigData.modules[updatedData.id] : delete newConfigData.systems[updatedData.id];
             } else {
                 if (formType === MODULE) {
                     // Update Modules
@@ -364,6 +373,8 @@ export default function ConfigBuilderPage() {
                     newConfigData.systems[updatedData.id] = updatedData;
                 }
             }
+
+            console.log('HOC Update: ', newConfigData);
 
             // Save change to state
             setConfigData(newConfigData);
