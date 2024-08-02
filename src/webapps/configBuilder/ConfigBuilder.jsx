@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 import ConfigBuilderPage from './src/ConfigBuilderPage.jsx';
-
 import {Box, Stack} from "@mui/material";
-
+import './i18n/i18n.js';
 
 
 export default function ConfigBuilder() {

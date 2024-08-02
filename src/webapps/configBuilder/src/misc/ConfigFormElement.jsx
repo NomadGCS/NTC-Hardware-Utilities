@@ -20,7 +20,7 @@ import PreconditionInput from "../inputs/PreconditionInput.jsx";
 import InterlockMap from "../interlockMap/InterlockMap.jsx";
 
 // PUT THIS BACK LATER
-// import TranslationInput from "../translation/TranslationInput.jsx";
+import TranslationInput from "../translation/TranslationInput.jsx";
 
 
 /**
@@ -152,7 +152,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
                     <label>{label} - (Translated Text)</label>
                     <Box sx={{border: '0px solid #ccc', padding: '00px 00px'}}>
                         {/* PUT THIS BACK LATER */}
-                        {/* <TranslationInput data={value} type={label} lists={options.translationsList} rhf={rhf}/> */}
+                        <TranslationInput data={value} type={label} lists={options.translationsList} rhf={rhf}/>
                     </Box>
                 </Box>
             )

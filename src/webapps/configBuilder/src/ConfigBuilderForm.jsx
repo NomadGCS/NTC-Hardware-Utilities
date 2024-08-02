@@ -5,7 +5,7 @@ import Stack from "@mui/material/Stack";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 // EXTRAS
-//import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next'
 
 // NTC
 import ConfigFormElement from "./misc/ConfigFormElement.jsx";
@@ -42,7 +42,7 @@ import {Box} from "@mui/material";
  * @constructor
  */
 export default function ConfigBuilderForm({id, type, data, options, configFormSchema, afterSubmit, cancelAction, interlockMapUpdate, getModuleSystems}) {
-    //const { t } = useTranslation()
+    const { t, i18n, ready } = useTranslation();
     const [displayName, setDisplayName] = useState(data?.meta?.id ?? "")
 
     // EDIT FORM
@@ -58,6 +58,12 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
 
     //console.log('jb ConfigBuilderForm: ', type, data, options, configFormSchema)
 
+    console.log('Translations: ', t, i18n)
+
+    if (ready) {
+        const resourcesArray = Object.keys(i18n.options.resources);
+        console.log(resourcesArray);
+    }
 
     useEffect(() => {
 
@@ -302,6 +308,7 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
     }
     return (
         <div className="module-details">
+            {t(`modules.dashboard.name`)}
             <fieldset className="form-wrap">
                 <legend style={{maxWidth:'450px', overflow: 'hidden'}}>{displayName}</legend>
                 <div style={{fontSize: '0.9em'}}>{id}</div>
