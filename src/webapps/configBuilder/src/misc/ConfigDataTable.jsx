@@ -1,9 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react'
 
 import {Box, useTheme, TableBody } from "@mui/material";
-import {NTCTable, NTCTableRow} from "../base/NTCTable";
-import NTCButton from "../../../inputs/buttons/NTCButton";
-import HardwareInput from "../inputs/HardwareInput";
+import {NTCTable, NTCTableRow,  } from "../base/NTCTable.tsx";
+import NTCButton from "../base/NTCButton.jsx";
+import HardwareInput from "../inputs/HardwareInput.jsx";
 
 
 /**

@@ -16,6 +16,7 @@ import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // JS
+import ConfigBuilderForm from "./ConfigBuilderForm.jsx";
 import ConfigViewButtonGroup from "./misc/ConfigViewButtonGroup.jsx";
 import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx";
 import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
@@ -433,6 +434,7 @@ export default function ConfigBuilderPage() {
                 <div className='content'>
                     <div className="builder-form">
                         {/* CONFIG BUILDER FORM GOES IN HERE --> May need to put original CSS back */}
+                        <ConfigBuilderForm id={selectedId} type={formType} data={selectedData} options={formOptions} configFormSchema={schemaData} afterSubmit={updateFormCallback} cancelAction={handleCancelForm} interlockMapUpdate={interlockMapUpdate} getModuleSystems={getModuleSystems}/>
                     </div>
                     <div className="json-layout">
                         <div className="json-header">
