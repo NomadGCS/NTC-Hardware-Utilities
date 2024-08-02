@@ -9,7 +9,7 @@ import {useTheme} from "@mui/material";
 export default function DisplayFormatSelector({selectedIndex, update, options}) {
     const {displayFormats} = options;
     const theme = useTheme();
-    const nomadRed = theme.palette.custom.nomadRed;
+    const nomadRed = '#CC2027';  //theme.palette.custom.nomadRed;
 
     return (
         <Box>

@@ -3,7 +3,6 @@ import React, {useState, useEffect, useRef} from 'react'
 // MUI
 import Box from "@mui/material/Box";
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
 // ICONS
@@ -11,11 +10,7 @@ import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import ViewInArOutlinedIcon from '@mui/icons-material/ViewInArOutlined';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
-import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
 
 // UI
 import { ImportModalDialog } from "../../display/modals/ConfirmModalDialog";
@@ -215,12 +210,13 @@ export default function ConfigBuilderPage() {
         })
     }
 
+    
     /**
      * Summary:  Displays the import modal.
      */
     const handleImportModal = () => {
         setImportErrors("");
-        setShowImportModal(true)
+        setShowImportModal(true);
     }
 
     /**

@@ -10,17 +10,10 @@ import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import ViewInArOutlinedIcon from '@mui/icons-material/ViewInArOutlined';
-import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlined';
-import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
-// JS
-import ConfigBuilderForm from "./ConfigBuilderForm.jsx";
-import ConfigViewButtonGroup from "./misc/ConfigViewButtonGroup.jsx";
-import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx";
-import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
-import {loadTranslations, sortArray} from "./translation/TranslationUtils";
+// UI
+import { ImportModalDialog } from "./base/modals/ConfirmModalDialog.jsx";
 
 // Data
 import { configFileSample } from "./data/configUIData";
@@ -29,6 +22,12 @@ import { configFormSchema } from "./data/configFormSchema";
 // CSS
 import './styles/configbuilderpage.css'
 
+// JS
+import ConfigBuilderForm from "./ConfigBuilderForm.jsx";
+import ConfigViewButtonGroup from "./misc/ConfigViewButtonGroup.jsx";
+import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx";
+import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
+import {loadTranslations, sortArray} from "./translation/TranslationUtils";
 
 export default function ConfigBuilderPage() {
 
@@ -62,6 +61,24 @@ export default function ConfigBuilderPage() {
     const MODULE = 0;
     const SYSTEM = 1;
 
+    
+    /**
+     * Summary:  Called when schema changes
+     */
+    useEffect(()=> {
+        if (schemaChanged > 0) {
+            const moduleSchemas = Object.keys(schemaData.modules);
+            const systemSchemas = Object.keys(schemaData.systems);
+
+            setModuleSchemas(moduleSchemas);
+            setSystemSchemas(systemSchemas);
+
+            loadConfigFile(configData);
+        }
+
+    }, [schemaChanged])
+
+
     /**
      * Called first time this component is loaded
      */
@@ -72,80 +89,22 @@ export default function ConfigBuilderPage() {
         }
 
         const configFileSample = configData?.configFileSample ?? null;
-        if (configFileSample) {
-            console.log(configFileSample)
+        if (configFileSample) {            
             setConfigData(configFileSample);
             loadConfigFile(configFileSample);
         }
     }, [])
 
-
-    // just for debugging, so we know modules and systems got loaded
-    useEffect(() =>{
-        console.log('Systems: ', systems);
-        console.log('Modules: ', modules);
-        console.log('Schemas: ', moduleSchemas);
-    }, [systems, modules])
-
-
-    // FUNCTIONS
-
+    
     /**
-     * Summary:  Called when user is trying to create a new MODULE or SYSTEM.  Displays a modal for user to select the
-     *           type (Interlock, HVAC, etc)
-     * @param type: MODULE or SYSTEM
+     * Summary:  Called when config data changes
      */
-    const handleAddClick = (type) => {
+    useEffect(()=> {
+        const firstRender = configData.configFileSample != null;
+        if (firstRender) return;
 
-        // Prevent user from opening a new form before the current one is saved.
-        if (showBuilderForm) {
-            alert('Edit form is already open.  Submit (or close) the form to open another system or module.')
-            return;
-        }
-
-        setFormType(type);
-        setShowCreateNew(true);
-    }
-
-  
-    const handleImportModal = () => {
-        console.log('handleImportModal')
-        alert('Import files')
-    }
-
-    /**
-     * Summary: Called after the input modal has been submitted.  This replaces the current asset-config JSON and replaces
-     *          it with the JSON contained in the import modal.
-     */
-    const handleImport = () => {
-        try {
-
-            // Get the file name
-            const fn = document.getElementById("selectedFileName");
-            if (fn) {
-                setFileName(fn.value);
-            }
-
-            // Get JSON from the textarea and use it
-            const json = copyTextFromInput("importTextArea");
-            const newData = JSON.parse(json);             // This is where the errors will come from.
-
-            // are we loading a new schema or a new config....
-            if (showSchema) {
-                setSchemaData(newData);
-                setSchemaChanged(schemaChanged+1);
-            }
-            else {
-                setConfigData(newData);
-            }
-
-            setShowImportModal(false)
-        }
-        catch (e) {
-            const message = `Error caught while parsing JSON.  ${e.message}`;
-            setImportErrors(message)
-        }
-    }
+        loadConfigFile(configData);
+    }, [configData])
 
 
     /**
@@ -193,8 +152,7 @@ export default function ConfigBuilderPage() {
             alert(message);
         }
     }
-
-
+    
     /**
      * Summary:  Creates an object containing all the lists the form and inputs may need.
      */
@@ -239,8 +197,7 @@ export default function ConfigBuilderPage() {
         });;
 
         // translation lists -> going to need these later and only want to load once
-        //const translationsList = loadTranslations();  // TODO -> this needs to be fixed
-        const translationsList = [];
+        const translationsList = loadTranslations();          
 
         // This is used by the Form to populate dropdowns and multi-selects.
         setFormOptions({
@@ -250,6 +207,66 @@ export default function ConfigBuilderPage() {
             translationsList,
             sensorTypes
         })
+    }
+      
+    /**
+     * Summary:  Displays the import modal.
+     */
+    const handleImportModal = () => {
+        setImportErrors("");
+        setShowImportModal(true);
+    }
+
+    /**
+     * Summary: Called after the input modal has been submitted.  This replaces the current asset-config JSON and replaces
+     *          it with the JSON contained in the import modal.
+     */
+    const handleImport = () => {
+        try {
+
+            // Get the file name
+            const fn = document.getElementById("selectedFileName");
+            if (fn) {
+                setFileName(fn.value);
+            }
+
+            // Get JSON from the textarea and use it
+            const json = copyTextFromInput("importTextArea");
+            const newData = JSON.parse(json);             // This is where the errors will come from.
+
+            // are we loading a new schema or a new config....
+            if (showSchema) {
+                setSchemaData(newData);
+                setSchemaChanged(schemaChanged+1);
+            }
+            else {
+                setConfigData(newData);
+            }
+
+            setShowImportModal(false)
+        }
+        catch (e) {
+            const message = `Error caught while parsing JSON.  ${e.message}`;
+            setImportErrors(message)
+        }
+    }
+
+    
+    /**
+     * Summary:  Called when user is trying to create a new MODULE or SYSTEM.  Displays a modal for user to select the
+     *           type (Interlock, HVAC, etc)
+     * @param type: MODULE or SYSTEM
+     */
+    const handleAddClick = (type) => {
+
+        // Prevent user from opening a new form before the current one is saved.
+        if (showBuilderForm) {
+            alert('Edit form is already open.  Submit (or close) the form to open another system or module.')
+            return;
+        }
+
+        setFormType(type);
+        setShowCreateNew(true);
     }
 
 
@@ -372,20 +389,29 @@ export default function ConfigBuilderPage() {
         setFormType(-1);
     }
 
-
     
-    const interlockMapUpdate = (getSys) => {
-        for (let i =0; i < systems.length; i++) {
-            if (systems[i].meta.id === getSys) return systems[i];
-        }
+    /**
+     * Summary:  Exports current JSON to user's local filesystem.
+     * @returns {Promise<void>}
+     */
+    const handleFileSave = () => {
+        // JSON to download
+        const blob = new Blob([JSON.stringify(configData, null, 2)], {type: 'application/json'});
+
+        // Force a download
+        const a = document.createElement('a');
+        a.download = fileName;
+        a.href = URL.createObjectURL(blob);
+        a.addEventListener('click', (e) => {
+            setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
+        });
+        a.click();
+
+        // Let user know what to do
+        alert("File is downloading to your local filesystem.  When complete, copy it to [I:\\NTC\\Asset-Configs] so other people on the team have access to it.")
     }
 
     
-    const getModuleSystems = () => {
-        return modules.filter((mod) => mod.type === 'interlock').flatMap((mod) => mod.systemIds)
-    }
-
-
     /**
      * Checks if schema exists based on name text passed in. 
      * @param {*} isModule 
@@ -402,7 +428,7 @@ export default function ConfigBuilderPage() {
      * @param {*} module 
      * @returns 
      */
-    const renderModuleName = (module) => {
+      const renderModuleName = (module) => {
         const existingSchema = doesSchemaExist(true, module.type);
         if (!existingSchema) {
             return (
@@ -422,10 +448,33 @@ export default function ConfigBuilderPage() {
         );
     }
 
+    
+    const interlockMapUpdate = (getSys) => {
+        for (let i =0; i < systems.length; i++) {
+            if (systems[i].meta.id === getSys) return systems[i];
+        }
+    }
+
+    
+    const getModuleSystems = () => {
+        return modules.filter((mod) => mod.type === 'interlock').flatMap((mod) => mod.systemIds)
+    }
+  
    
     // RENDER
     return (
         <div>
+            {showImportModal &&
+                <ImportModalDialog
+                    maxWidth={'lg'}
+                    open={true} handleClose={() => setShowImportModal(false)}
+                    modalTitle={(showSchema) ? "Load new schema" : "Import asset-config"}
+                    handleConfirm={handleImport}
+                    handleCancel={() => setShowImportModal(false)}
+                    confirmMessage="Paste config json in the textarea below and click 'OK"
+                    errors={importErrors}
+                />
+            }
 
             {showCreateNew &&
                 <ConfigBuilderCreateNewModal
@@ -530,8 +579,7 @@ export default function ConfigBuilderPage() {
                                 </div>
                             </Stack>
                         </div>
-                    </div>
-                    <div className="json-code">
+                        <div className="json-code">
                         <pre>
                             {!showSchema &&
                                 <textarea
@@ -556,6 +604,16 @@ export default function ConfigBuilderPage() {
                             </IconButton>
                         </div>
                     </div>
+                    </div> 
+                    <div>
+                        <div style={{float: 'right', margin: '10px 20px'}} >
+                            <input type="text" value={fileName} onChange={(e) => {
+                                // save new filename
+                                setFileName(e.target.value);
+                            }}></input>
+                            <button onClick={() => { handleFileSave(); }}>Export</button>
+                        </div>
+                    </div>                  
                 </div>
             </div>
         </div>

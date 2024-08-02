@@ -57,14 +57,7 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
     const SYSTEM = 1;
 
     //console.log('jb ConfigBuilderForm: ', type, data, options, configFormSchema)
-
-    console.log('Translations: ', t, i18n)
-
-    if (ready) {
-        const resourcesArray = Object.keys(i18n.options.resources);
-        console.log(resourcesArray);
-    }
-
+    
     useEffect(() => {
 
         // HACK:  Update the options.systemTypes to only include systems of the same type as this module/system.
