@@ -1,9 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react'
 
 import {Box, useTheme, TableBody } from "@mui/material";
-import {NTCTable, NTCTableRow} from "../base/NTCTable";
-import NTCButton from "../../../inputs/buttons/NTCButton";
-import HardwareInput from "../inputs/HardwareInput";
+import {NTCTable, NTCTableRow,  } from "../base/NTCTable.jsx";
+import NTCButton from "../base/NTCButton.jsx";
+import HardwareInput from "../inputs/HardwareInput.jsx";
 
 
 /**
@@ -16,7 +16,7 @@ const splitCapitalize = (word) => {
 }
 
 export default function ConfigDataTable({ label, name, fields, renderItem, addObject, rhf, formOptions } ) {
-    const theme = useTheme()
+    //const theme = useTheme()
     const [inputs, setInputs] = useState([]);
     const updates = useRef(fields);
     const sectionLabel = (label) ? label : 'Hardware Inputs';
@@ -77,7 +77,7 @@ export default function ConfigDataTable({ label, name, fields, renderItem, addOb
                         <NTCTableRow>
                             <td>
                                 <Box sx={{display: 'flex', justifyContent: 'flex-end', padding: '5px'}}>
-                                    <NTCButton text={'Add'} backgroundColor={theme.palette.custom.nomadRed} onClick={handleAdd}></NTCButton>
+                                    <NTCButton text={'Add'} backgroundColor={'#CC2027'} onClick={handleAdd}></NTCButton>
                                 </Box>
                             </td>
                         </NTCTableRow>

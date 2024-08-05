@@ -1,29 +1,18 @@
 
-export function copyToClipBoard() {
-    // const copyText = document.getElementById("jsonResult");
-    //
-    // // Select the text field
-    // copyText.select();
-    // copyText.setSelectionRange(0, 99999); // For mobile devices
-
+export async function copyToClipBoard() {
     let text = copyTextFromInput("jsonResult")
 
     // Copy the text inside the text field
-    navigator.clipboard.writeText(text);
-
+    await parent.navigator.clipboard.writeText(text);
     console.log('text: ', text)
 
+
+    // ELECTRON NOTES 
+    // Since moving to electron, if showing an Alert before or after trying to use clipboard functions, an error will get thrown.  It appears 
+    // that the document loses focus (in Electron only) when an Alert is displayed).
+
     // Alert the copied text
-    alert(text);
-
-    // TODO:  There may be some bugs around closing the alert (...document not focused...).  Need to test without dev tools open for sure.
-
-    // ------------------------------
-
-    // clipboard.writeText(clippy_button.href).then(function(x) {
-    //     alert("Link copied to clipboard: " + clippy_button.href);
-    //   });
-
+    //alert('JSON copied to clipboard');    // this causes it to crash in Electron....
 }
 
 export function copyTextFromInput( id ) {
