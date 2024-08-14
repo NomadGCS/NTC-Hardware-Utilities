@@ -4,5 +4,11 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  getFolder: async (folder) => ipcRenderer.invoke('get-Folder', folder)
+  // loads json in folder
+  getFolder: async (folder) => ipcRenderer.invoke('get-Folder', folder),
+  // opens file explorer
+  showItemInFolder(fullPath) {
+    console.log('showIteminFolder: ', fullPath);
+    return ipcRenderer.invoke('showItemInFolder', fullPath);
+  }
 })

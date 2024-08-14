@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
 const { readFile } = require('node:fs');
@@ -21,33 +21,47 @@ const INTERLOCKMAP_PRELOAD = INTERLOCK_MAPPER_PRELOAD_WEBPACK_ENTRY;
 // ./webapps/configBuilder/
 const CONFIGBUILDER = CONFIG_BUILDER_WEBPACK_ENTRY;                 
 const CONFIGBUILDER_PRELOAD = CONFIG_BUILDER_PRELOAD_WEBPACK_ENTRY; 
+const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis";
+const CONFIGURATIONS_PATH = '../../configurations/';
 
-const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis"
-
+let activeWindow = 0;
 
 // ---------------------------------------------------------------------------------------------------------------------------
 //  MENU 
 // ---------------------------------------------------------------------------------------------------------------------------
-let menuTemplate = [
-  {
-      label: "File",
-      submenu: [
-          { label: "Tip your local programmer", click: () => {switchWindow(INTERLOCKMAP, INTERLOCKMAP_PRELOAD)} },             
-          { label: "Exit", click: () => { shutdown() } },             
-      ]
-  },
-  {
-    label: "Apps",
-    submenu: [
-        { label: "Build Interlock Map", click: () => {switchWindow(INTERLOCKMAP, INTERLOCKMAP_PRELOAD)} },
-        { label: "Build Asset-Config", click: () => {switchWindow(CONFIGBUILDER, CONFIGBUILDER_PRELOAD)} },
-        { label: "Learn Markdown", click: () => {switchWindow(MARKDOWN_DOCUMENTATION)} }          
-    ]
-  }
-];
+
 
 // Menu
 function createMenu() {
+
+  let menuTemplate = [
+    {
+        label: "File",
+        submenu: [
+            { label: "Tip your local programmer", click: () => {switchWindow(INTERLOCKMAP, INTERLOCKMAP_PRELOAD)} },             
+            { label: "Exit", click: () => { shutdown() } },             
+        ]
+    },
+    {
+      label: "Apps",
+      submenu: [
+          { label: "Build Interlock Map", click: () => {switchWindow(INTERLOCKMAP, INTERLOCKMAP_PRELOAD)} },
+          { label: "Build Asset-Config", click: () => {switchWindow(CONFIGBUILDER, CONFIGBUILDER_PRELOAD)} },
+          { label: "Learn Markdown", click: () => {switchWindow(MARKDOWN_DOCUMENTATION)} }          
+      ]
+    } 
+  ];
+  
+  if (activeWindow === CONFIGBUILDER) {
+    menuTemplate.push({
+      label: "Config Builder", 
+      submenu: [ 
+        { label: "Show Systems/Modules", click: () => { openFolder(CONFIGURATIONS_PATH); } },       
+      ]
+    })
+  }
+
+
   let menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 }
@@ -174,10 +188,17 @@ function switchWindow(webapp, preload = "") {
   mainWindow.hide();  
 
   // open web app 
-  createWindow(webapp, preload)  
+  createWindow(webapp, preload);
+
+  // update state
+  activeWindow = webapp;
+
+  createMenu();
 }
 
-
+function openFolder(relativePath) {
+  shell.openPath(path.join(__dirname, relativePath));
+}
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
@@ -185,6 +206,7 @@ function switchWindow(webapp, preload = "") {
 
 // This grabs all the text files in the folder name you send it
 app.whenReady().then(()=> {
+  // loads JSON files
   ipcMain.handle('get-Folder', (event, folder) => {
     const fileContents = {}
     fs.readdirSync(`./configurations/${folder}`).forEach(file => {
@@ -192,6 +214,13 @@ app.whenReady().then(()=> {
       fileContents[fileData.type] = fileData
     })
     return fileContents
-  })
+  });
+
+  // opens file explorer
+  // example: https://github.com/electron/electron/issues/36765
+  ipcMain.handle('showItemInFolder', (event, fullPath) => {    
+    //shell.openPath(path.join(__dirname, '../../configurations/'));
+    openFolder(CONFIGURATIONS_PATH); 
+  });
 })
 
