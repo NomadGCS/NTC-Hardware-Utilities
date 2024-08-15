@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, shell, dialog } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
 const { readFile } = require('node:fs');
@@ -208,11 +208,45 @@ function openFolder(relativePath) {
 app.whenReady().then(()=> {
   // loads JSON files
   ipcMain.handle('get-Folder', (event, folder) => {
-    const fileContents = {}
+    const fileContents = {};
+    let numberOfFiles = 0;
+    let numberOfFilesLoaded = 0;    
     fs.readdirSync(`./configurations/${folder}`).forEach(file => {
-      let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`))
-      fileContents[fileData.type] = fileData
+      try {
+        numberOfFiles++;
+        let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`));
+        const systemType = fileData.type;
+        const fields = fileData.fields;        
+        fileContents[systemType] = fields;
+        numberOfFilesLoaded++;
+      }
+      catch(ex) {        
+        console.error('Exception caught while parsing JSON: ', ex);
+        dialog.showErrorBox(`Error Parsing JSON from folder [${folder}]`, `Error in ${file}.  ${ex.message}.  Open the file in a text editor like Notepad++ and verify it is valid JSON.`);        
+      }
     })
+
+    if (numberOfFiles == numberOfFilesLoaded) {  
+      console.log('errors: ', numberOfFiles, numberOfFilesLoaded);
+
+      //dialog.showMessageBox('Success', 'All JSON files were loaded successfully');
+      dialog.showMessageBox({
+        // option Object
+        type: 'info',
+        buttons: [],
+        defaultId: 0,
+        icon: '',
+        title: 'Success',
+        message: `All JSON files from [${folder}] were successfully loaded`,
+        detail: '', //`${numberOfFilesLoaded} - ${numberOfFilesLoaded}`,
+        checkboxLabel: '',
+        checkboxChecked: false,
+        cancelId: 0,
+        noLink: false,
+        normalizeAccessKeys: false,
+    })
+    }
+
     return fileContents
   });
 

@@ -86,12 +86,15 @@ export default function ConfigBuilderPage() {
         const configSchemaSample = schemaData?.configFormSchema ?? null;
         if (configSchemaSample) {
             setSchemaData(schemaData.configFormSchema);
+            console.log(configSchemaSample);
         }
 
         const configFileSample = configData?.configFileSample ?? null;
         if (configFileSample) {            
             setConfigData(configFileSample);
             loadConfigFile(configFileSample);
+
+            //console.log(configFileSample);
         }
     }, [])
 

@@ -1,0 +1,34 @@
+{
+	"type": "batteryMonitor",
+	"fields": {
+            "displayName": {
+                "label": "Display Name",
+                "path": "meta.id",
+                "additionalPaths": ["id"],
+                "type": "input",
+                "value": "Battery Monitor"
+            },
+            "name": {
+                "label": "Name",
+                "path": "name",
+                "type": "translation",
+                "value": { "value": "modules.batteryMonitor.name" }
+            },
+            "type": {
+                "label": "Type",
+                "path": "type",
+                "type": "dropdown",
+                "values": "moduleTypes",
+                "readonly": true,
+                "value": "Battery Monitor"
+            },
+            "systemIds": {
+                "label": "Systems",
+                "path": "systemIds",
+                "type": "multiselect",
+                "values": "existingSystemsForModule",
+                "value": []
+            }
+        }
+
+}

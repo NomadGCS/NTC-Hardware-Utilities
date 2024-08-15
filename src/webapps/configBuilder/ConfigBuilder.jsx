@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ConfigBuilderPage from './src/ConfigBuilderPage.jsx';
 import {Box, Stack} from "@mui/material";
 import './i18n/i18n.js';
@@ -7,6 +7,7 @@ import './i18n/i18n.js';
 export default function ConfigBuilder() {
   const [modules, setModules] = useState(null)
   const [systems, setSystems] = useState(null)
+  const [schema, setSchema] = useState(null)
 
   async function getFromMain() {
     setModules(await window.electronAPI.getFolder('modules'))
@@ -17,8 +18,21 @@ export default function ConfigBuilder() {
     await window.electronAPI.showItemInFolder('C:\\Users\\john.bissen\\VS Projects\\NTC-Hardware-Utilities\\configurations\\modules')
   }
 
-  console.log(modules)
-  console.log(systems)
+  useEffect(() => {
+    if (modules && systems) {
+      const newSchema = {
+        "version": "0.9.2",
+        "templateVersion": "0.0.1",
+        "modules": modules,
+        "systems": systems
+      }
+      setSchema(newSchema);
+    }
+  }, [modules, systems])
+
+  console.log(modules);
+  console.log(systems);
+  console.log(schema);
 
   return (       
     <div name='config-builder-component' style={{height:'100%', background: 'white', borderRadius: '7px'}}>  
