@@ -4,11 +4,14 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  // loads json in folder
+  // loads and returns all json files in folder
   getFolder: async (folder) => ipcRenderer.invoke('get-Folder', folder),
+  // loads and returns a single json file in folder
+  loadFile: async (file) => ipcRenderer.invoke('load-File', file),
+  // gets list of files in folder
+  listFilesInFolder: async () => ipcRenderer.invoke('listFilesInFolder'),
   // opens file explorer
-  showItemInFolder(fullPath) {
-    console.log('showIteminFolder: ', fullPath);
-    return ipcRenderer.invoke('showItemInFolder', fullPath);
+  showItemInFolder(name) {    
+    return ipcRenderer.invoke('showItemInFolder', name);
   }
 })

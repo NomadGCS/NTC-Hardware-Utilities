@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, Menu, shell, dialog } = require('electron')
 const path = require('node:path');
 const fs = require('fs');
 const { readFile } = require('node:fs');
+const moment = require('moment');
 
 let mainWindow;             // This is what is displayed on the screen
 let windows = new Set();    // This is the list of available browser windows to display
@@ -23,6 +24,7 @@ const CONFIGBUILDER = CONFIG_BUILDER_WEBPACK_ENTRY;
 const CONFIGBUILDER_PRELOAD = CONFIG_BUILDER_PRELOAD_WEBPACK_ENTRY; 
 const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis";
 const CONFIGURATIONS_PATH = '../../configurations/';
+const ASSET_CONFIGS_PATH = '../../asset-configs/';
 
 let activeWindow = 0;
 
@@ -200,13 +202,19 @@ function openFolder(relativePath) {
   shell.openPath(path.join(__dirname, relativePath));
 }
 
+function parseJsonFile(filePath) {
+  let fileData = JSON.parse(fs.readFileSync(filePath));
+  return fileData;
+}
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
 
 // This grabs all the text files in the folder name you send it
 app.whenReady().then(()=> {
-  // loads JSON files
+
+  // loads JSON files in a specific folder
   ipcMain.handle('get-Folder', (event, folder) => {
     const fileContents = {};
     let numberOfFiles = 0;
@@ -214,7 +222,8 @@ app.whenReady().then(()=> {
     fs.readdirSync(`./configurations/${folder}`).forEach(file => {
       try {
         numberOfFiles++;
-        let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`));
+        //let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`));
+        let fileData = parseJsonFile(`./configurations/${folder}/${file}`)
         const systemType = fileData.type;
         const fields = fileData.fields;        
         fileContents[systemType] = fields;
@@ -244,17 +253,80 @@ app.whenReady().then(()=> {
         cancelId: 0,
         noLink: false,
         normalizeAccessKeys: false,
-    })
+      })
     }
 
     return fileContents
   });
 
+  // loads JSON file in folder
+  ipcMain.handle('load-File', (event, file) => {
+    let fileContents = {};
+    
+    try {    
+      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);  
+      fileContents = parseJsonFile(`${fullPath}/${file}`);
+
+      //const systemType = fileData.type;
+      //const fields = fileData.fields;        
+      //fileContents[systemType] = fields;      
+    }
+    catch(ex) {        
+      console.error('Exception caught while parsing JSON: ', ex);
+      dialog.showErrorBox(`Error Parsing JSON in file [${file}]`, `Error in ${file}.  ${ex.message}.  Open the file in VS Code and verify it is valid JSON.`);        
+    }
+   
+    return fileContents
+  });
+
+
+  // returns a list of file names in a directory
+  ipcMain.handle('listFilesInFolder', (event) => {   
+    const fileList = []; 
+    const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);
+    //console.log(fullPath);
+    fs.readdirSync(fullPath).forEach(file => {
+      //console.log(file);    
+          let stats = fs.statSync(`${fullPath}/${file}`);
+
+          // get last modified date/time
+          const lastModifiedMS = stats.mtimeMs;          
+          const formattedTime = moment(lastModifiedMS).format("dddd, MMMM Do, YYYY h:mm A")
+
+          // get filesize in KB
+          const fileSize = Math.ceil(stats.size / 1024) + " KB";          
+          
+          // attempt to parse file
+          let ableToParse = false;
+          let fileContents = {};
+          try {
+            parseJsonFile(`${fullPath}/${file}`);
+            ableToParse = true;
+          }
+          catch (ex) {
+            console.log('failed to parse json: ', file)
+          }
+
+          fileList.push({
+            "fileName": file,
+            "lastModified": formattedTime,
+            "fileSize": fileSize,
+            "validJson": ableToParse,            
+          })
+    });
+    console.log(fileList);
+    return fileList;
+  });
+
   // opens file explorer
   // example: https://github.com/electron/electron/issues/36765
-  ipcMain.handle('showItemInFolder', (event, fullPath) => {    
-    //shell.openPath(path.join(__dirname, '../../configurations/'));
-    openFolder(CONFIGURATIONS_PATH); 
+  ipcMain.handle('showItemInFolder', (event, name) => {    
+    if (name.includes('asset')) {
+      openFolder(ASSET_CONFIGS_PATH); 
+    }
+    else {
+      openFolder(CONFIGURATIONS_PATH); 
+    }
   });
 })
 

@@ -8,6 +8,7 @@ export default function ConfigBuilder() {
   const [modules, setModules] = useState(null)
   const [systems, setSystems] = useState(null)
   const [schema, setSchema] = useState(null)
+  const [availableFiles, setAvailableFiles] = useState([]);
 
   async function getFromMain() {
     setModules(await window.electronAPI.getFolder('modules'))
@@ -16,6 +17,12 @@ export default function ConfigBuilder() {
 
   async function openFolder() {
     await window.electronAPI.showItemInFolder('C:\\Users\\john.bissen\\VS Projects\\NTC-Hardware-Utilities\\configurations\\modules')
+  }
+  
+  async function listFiles() {
+    let fileList = await window.electronAPI.listFilesInFolder();
+    console.log('File List: ', fileList);
+    setAvailableFiles(fileList);
   }
 
   useEffect(() => {
@@ -39,6 +46,7 @@ export default function ConfigBuilder() {
       <div>
         <button onClick={getFromMain}>Get Files</button>
         <button onClick={openFolder}>Open Folder</button>
+        <button onClick={listFiles}>List Files</button>
       </div>    
       <ConfigBuilderPage></ConfigBuilderPage>
     </div>   
