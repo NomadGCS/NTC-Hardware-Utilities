@@ -15,8 +15,9 @@ export default function ConfigBuilder({assetConfigJSON, assetConfigFileName}) {
   // -------------------------------------------------------------------------------------------------
   
   useEffect(() => {
+    console.log('Getting latest schemas');
     getFromMain();
-  }, [])
+  }, [assetConfigJSON])
 
   useEffect(() => {
     if (modules && systems) {
