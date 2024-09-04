@@ -18,6 +18,12 @@
             "readonly": true,
             "value": "interlock"
         },
+        "subType": {
+			"label": "subType",
+			"path": "subType",
+			"type": "input",			
+			"value": ""
+		},
         "group": {
             "label": "Group",
             "path": "hardware.group",

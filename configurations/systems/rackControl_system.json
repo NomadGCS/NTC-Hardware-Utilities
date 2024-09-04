@@ -17,6 +17,12 @@
             "readonly": true,
             "value": "Rack Control"
         },
+        "subType": {
+			"label": "subType",
+			"path": "subType",
+			"type": "input",			
+			"value": ""
+		},
         "separator-1": {
             "type": "separator"
         },

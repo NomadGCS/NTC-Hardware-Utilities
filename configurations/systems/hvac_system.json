@@ -17,6 +17,12 @@
             "readonly": true,
             "value": "hvac"
         },
+        "subType": {
+			"label": "subType",
+			"path": "subType",
+			"type": "input",			
+			"value": ""
+		},
         "separator-0": {
             "type": "separator"
         },
