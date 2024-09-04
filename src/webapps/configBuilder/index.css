@@ -58,3 +58,20 @@ body {
 
   background-color: beige;
 }
+
+
+#assetConfigLoader td, #assetConfigLoader th {
+  text-align: center;
+  border-bottom: 1px solid #ccc
+}
+#assetConfigLoader tr:last-of-type td {
+  border-bottom: 0px solid #ccc;
+}
+#assetConfigLoader tr.hoverable:hover {
+  background-color: #abe7a0;  
+  cursor: pointer;
+}
+#assetConfigLoader tr.invalid {
+  background-color: #f5dada;  
+  cursor: default;
+}

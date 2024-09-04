@@ -1,0 +1,33 @@
+{
+    "type": "weatherStation",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Weather Station"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.weatherStation.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "moduleTypes",
+            "readonly": true,
+            "value": "Weather Station"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "value": []
+        }
+    }
+}

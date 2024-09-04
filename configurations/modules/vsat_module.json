@@ -1,0 +1,33 @@
+{
+    "type": "vsat",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "VSAT"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.vsat.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "moduleTypes",
+            "readonly": true,
+            "value": "VSAT"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "value": []
+        }
+    }
+}

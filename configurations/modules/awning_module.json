@@ -1,0 +1,34 @@
+{
+	"type": "awning",	
+	"last_updated": "2024/09/04",
+	"fields": {
+            "displayName": {
+                "label": "Display Name",
+                "path": "meta.id",
+                "additionalPaths": ["id"],
+                "type": "input",
+                "value": "Awning"
+            },
+            "name": {
+                "label": "Name",
+                "path": "name",
+                "type": "translation",
+                "value": { "value": "modules.awning.name" }
+            },
+            "type": {
+                "label": "Type",
+                "path": "type",
+                "type": "dropdown",
+                "values": "moduleTypes",
+                "readonly": true,
+                "value": "Awning"
+            },
+            "systemIds": {
+                "label": "Systems",
+                "path": "systemIds",
+                "type": "multiselect",
+                "values": "existingSystemsForModule",
+                "value": []
+            }
+        }
+}

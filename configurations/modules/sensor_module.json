@@ -1,0 +1,33 @@
+{
+    "type": "sensor",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Sensor"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.sensor.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "moduleTypes",
+            "readonly": true,
+            "value": "Sensor"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "value": []
+        }
+    }
+}

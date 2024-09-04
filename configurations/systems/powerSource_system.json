@@ -1,0 +1,159 @@
+{
+    "type": "powerSource", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Power Source"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "powerSource"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.shorePower.name" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "configVoltageBoundsMin": {
+            "label": "Voltage - Bounds - Min",
+            "path": "config.voltage.bounds.min",
+            "type": "input",
+            "value": "90.0",
+            "group": 1
+        },
+        "configVoltageBoundsMax": {
+            "label": "Voltage - Bounds - Max",
+            "path": "config.voltage.bounds.max",
+            "type": "input",
+            "value": 150.0,
+            "group": 1
+        },
+        "configVoltageSafeBoundsMin": {
+            "label": "Voltage - Safe Bounds - Min",
+            "path": "config.voltage.safeBounds.min",
+            "type": "input",
+            "value": "110.0",
+            "group": 1
+        },
+        "configVoltageSafeBoundsMax": {
+            "label": "Voltage - Safe Bounds - Max",
+            "path": "config.voltage.safeBounds.max",
+            "type": "input",
+            "value": "130.0",
+            "group": 1
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "configCurrentBoundsMin": {
+            "label": "Current - Bounds - Min",
+            "path": "config.current.bounds.min",
+            "type": "input",
+            "value": 0.0,
+            "group": 2
+        },
+        "configCurrentBoundsMax": {
+            "label": "Current - Bounds - Max",
+            "path": "config.current.bounds.max",
+            "type": "input",
+            "value": 100.0,
+            "group": 2
+        },
+        "configCurrentSafeBoundsMin": {
+            "label": "Current - Safe Bounds - Min",
+            "path": "config.current.safeBounds.min",
+            "type": "input",
+            "value": 0.0,
+            "group": 2
+        },
+        "configCurrentSafeBoundsMax": {
+            "label": "Current - Safe Bounds - Max",
+            "path": "config.current.safeBounds.max",
+            "type": "input",
+            "value": 80.0,
+            "group": 2
+        },
+        "separator-4": {
+            "type": "separator"
+        },
+        "configFrequencyBoundsMin": {
+            "label": "Frequency - Bounds - Min",
+            "path": "config.frequency.bounds.min",
+            "type": "input",
+            "value": 55.0,
+            "group": 3
+        },
+        "configFrequencyBoundsMax": {
+            "label": "Frequency - Bounds - Max",
+            "path": "config.frequency.bounds.max",
+            "type": "input",
+            "value": 65.0,
+            "group": 3
+        },
+        "configFrequencySafeBoundsMin": {
+            "label": "Frequency - Safe Bounds - Min",
+            "path": "config.frequency.safeBounds.min",
+            "type": "input",
+            "value": 58.0,
+            "group": 3
+        },
+        "configFrequencySafeBoundsMax": {
+            "label": "Frequency - Safe Bounds - Max",
+            "path": "config.frequency.safeBounds.max",
+            "type": "input",
+            "value": 62.0,
+            "group": 3
+        },
+        "separator-5": {
+            "type": "separator"
+        },
+        "hardwareSerialNumber": {
+            "label": "sn",
+            "path": "hardware.sn",
+            "type": "input",
+            "value": "000-000-000"
+        },
+        "separator-6": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "Inputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

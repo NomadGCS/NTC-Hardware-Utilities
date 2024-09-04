@@ -1,0 +1,39 @@
+{
+    "type": "mast",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Masts"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.mast.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "moduleTypes",
+            "readonly": true,
+            "value": "mast"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "value": []
+        },
+        "config": {
+            "label": "Simultaneous Control",
+            "path": "config.simultaneousControl",
+            "type": "switch",
+            "value": false
+        }
+    }
+}

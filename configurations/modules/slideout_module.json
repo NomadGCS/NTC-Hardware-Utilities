@@ -1,0 +1,33 @@
+{
+    "type": "slideout",
+    "fields": {
+        "displayName": {
+                "label": "Display Name",
+                "path": "meta.id",
+                "additionalPaths": ["id"],
+                "type": "input",
+                "value": "Slideout"
+            },
+            "name": {
+                "label": "Name",
+                "path": "name",
+                "type": "translation",
+                "value": { "value": "modules.slideout.name" }
+            },
+            "type": {
+                "label": "Type",
+                "path": "type",
+                "type": "dropdown",
+                "values": "moduleTypes",
+                "readonly": true,
+                "value": "Slideout"
+            },
+            "systemIds": {
+                "label": "Systems",
+                "path": "systemIds",
+                "type": "multiselect",
+                "values": "existingSystemsForModule",
+                "value": []
+            }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "type": "rackControl",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Rack Control"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.rackControl.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "moduleTypes",
+            "readonly": true,
+            "value": "Rack Control"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "value": []
+        }
+    }
+}

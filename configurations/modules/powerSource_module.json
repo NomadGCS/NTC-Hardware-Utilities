@@ -1,0 +1,33 @@
+{
+    "type": "powerSource",
+    "fields": {
+       "displayName": {
+                "label": "Display Name",
+                "path": "meta.id",
+                "additionalPaths": ["id"],
+                "type": "input",
+                "value": "Power Source"
+            },
+            "name": {
+                "label": "Name",
+                "path": "name",
+                "type": "translation",
+                "value": { "value": "modules.shorePower.name" }
+            },
+            "type": {
+                "label": "Type",
+                "path": "type",
+                "type": "dropdown",
+                "values": "moduleTypes",
+                "readonly": true,
+                "value": "powerSource"
+            },
+            "systemIds": {
+                "label": "Systems",
+                "path": "systemIds",
+                "type": "multiselect",
+                "values": "existingSystemsForModule",
+                "value": []
+            }
+    }
+}

@@ -1,0 +1,82 @@
+{
+    "type": "vsat", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "VSAT System"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "VSAT"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.vsat.name" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "hardwareTimeoutDeploy": {
+            "label": "Timeout for Deploy (ms)",
+            "path": "hardware.timeouts.deploy",
+            "type": "input",
+            "value": "0",
+            "group": 1
+        },
+        "hardwareTimeoutStow": {
+            "label": "Timeout for Stow (ms)",
+            "path": "hardware.timeouts.stow",
+            "type": "input",
+            "value": "0",
+            "group": 1
+        },
+        "hardwareActionsDeploy": {
+            "label": "Action - Deploy (int)",
+            "path": "hardware.actions.deploy",
+            "type": "input",
+            "value": "1",
+            "group": 1
+        },
+        "hardwareActionsStow": {
+            "label": "Action - Stow (int)",
+            "path": "hardware.actions.stow",
+            "type": "input",
+            "value": "0",
+            "group": 1
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

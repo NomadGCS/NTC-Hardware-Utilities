@@ -1,0 +1,61 @@
+{
+    "type": "light",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Lights"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.light.name" }
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "format": "string",
+            "values": "moduleTypes",
+            "required": true,
+            "readonly": true,
+            "value": "light"
+        },
+        "systemIds": {
+            "label": "Systems",
+            "path": "systemIds",
+            "type": "multiselect",
+            "values": "existingSystemsForModule",
+            "format": "array",
+            "value": [
+            ]
+        },
+        "color-1": {
+            "label": "Color 1",
+            "path": "config.presets.1",
+            "type": "input",
+            "format": "hexColorCode",
+            "required": true,
+            "value": "#ffffff"
+        },
+        "color-2": {
+            "label": "Color 2",
+            "path": "config.presets.2",
+            "type": "input",
+            "format": "hexColorCode",
+            "required": true,
+            "value": "#ff0000"
+        },
+        "color-3": {
+            "label": "Color 3",
+            "path": "config.presets.3",
+            "type": "input",
+            "format": "hexColorCode",
+            "required": true,
+            "value": "#0034ff"
+        }        
+    }
+}

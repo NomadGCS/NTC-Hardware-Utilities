@@ -1,0 +1,124 @@
+ {
+    "type": "batteryMonitor", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Battery Monitor"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "batteryMonitor"
+        },
+        "separator-0": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.batteryMonitor.name" }
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "configVoltageBoundsMin": {
+            "label": "Voltage - Bounds - Min",
+            "path": "config.voltage.bounds.min",
+            "type": "input",
+            "value": "9.0",
+            "group": 1
+        },
+        "configVoltageBoundsMax": {
+            "label": "Voltage - Bounds - Max",
+            "path": "config.voltage.bounds.max",
+            "type": "input",
+            "value": 16.0,
+            "group": 1
+        },
+        "configVoltageSafeBoundsMin": {
+            "label": "Voltage - Safe Bounds - Min",
+            "path": "config.voltage.safeBounds.min",
+            "type": "input",
+            "value": "11.0",
+            "group": 1
+        },
+        "configVoltageSafeBoundsMax": {
+            "label": "Voltage - Safe Bounds - Max",
+            "path": "config.voltage.safeBounds.max",
+            "type": "input",
+            "value": "14.0",
+            "group": 1
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "configCurrentBoundsMin": {
+            "label": "Current - Bounds - Min",
+            "path": "config.current.bounds.min",
+            "type": "input",
+            "value": -120.0,
+            "group": 2
+        },
+        "configCurrentBoundsMax": {
+            "label": "Current - Bounds - Max",
+            "path": "config.current.bounds.max",
+            "type": "input",
+            "value": 120.0,
+            "group": 2
+        },
+        "configCurrentSafeBoundsMin": {
+            "label": "Current - Safe Bounds - Min",
+            "path": "config.current.safeBounds.min",
+            "type": "input",
+            "value": -100.0,
+            "group": 2
+        },
+        "configCurrentSafeBoundsMax": {
+            "label": "Current - Safe Bounds - Max",
+            "path": "config.current.safeBounds.max",
+            "type": "input",
+            "value": 100.0,
+            "group": 2
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareSource": {
+            "label": "source",
+            "path": "hardware.source",
+            "type": "input",
+            "value": "nti",
+            "group": 3
+        },
+        "hardwareIndex": {
+            "label": "index",
+            "path": "hardware.index",
+            "type": "input",
+            "value": "1",
+            "group": 3
+        },
+        "separator-4": {
+            "type": "separator"
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

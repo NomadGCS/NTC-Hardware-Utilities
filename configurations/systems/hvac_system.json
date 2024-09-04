@@ -1,0 +1,72 @@
+ {
+    "type": "hvac", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "hvac"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "hvac"
+        },
+        "separator-0": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.hvac.name" }
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "modes": {
+            "label": "Modes",
+            "path": "config.modes",
+            "type": "multiselect",
+            "defaultOptions": ["auto", "cool", "heat", "off"]
+        },
+        "fanSpeeds": {
+            "label": "Fan Speeds",
+            "path": "config.fanSpeeds",
+            "type": "multiselect",
+            "defaultOptions": ["auto", "high", "medium", "low"]
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "Inputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "exclusions": {
+            "label": "Exclusions",
+            "path": "hardware.exclusions",
+            "type": "exclusions",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        }
+    }
+}
