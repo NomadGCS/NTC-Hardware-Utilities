@@ -261,6 +261,8 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
         const fields = Object.values(selectedSchema);
         const result = [];
 
+        console.log('Fields: ', fields);
+
         let currentGroupNumber = 0;
         let currentGroup = [];
         fields.forEach(field => {
@@ -291,6 +293,7 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
         return result;
     }
     let groups = groupedFields();
+    console.log('Groups: ', groups);
 
     // RENDER
     if (formErrors.state) {

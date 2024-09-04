@@ -5,6 +5,8 @@ const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('electronAPI', {
   // loads and returns all json files in folder
+  saveFile: async (json, fileName) => ipcRenderer.invoke('save-json', json, fileName),
+  // loads and returns all json files in folder
   getFolder: async (folder) => ipcRenderer.invoke('get-Folder', folder),
   // loads and returns a single json file in folder
   loadFile: async (file) => ipcRenderer.invoke('load-File', file),

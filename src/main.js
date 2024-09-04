@@ -214,6 +214,21 @@ function parseJsonFile(filePath) {
 // This grabs all the text files in the folder name you send it
 app.whenReady().then(()=> {
 
+  // saves JSON file to directory
+  ipcMain.handle('save-json', (event, json, fileName) => {
+
+    console.log("Save-Json: ", fileName, json);
+    try {
+      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH + "\\" + fileName);  
+      fs.writeFileSync(fullPath, json);
+    }
+    catch(ex) {
+      console.error('Exception caught while saving JSON: ', ex);
+      dialog.showErrorBox(`Error saving json to file`, `Error in ${json}, ${fileName}.  ${ex.message}.`);        
+    }
+  });
+
+
   // loads JSON files in a specific folder
   ipcMain.handle('get-Folder', (event, folder) => {
     const fileContents = {};
@@ -238,22 +253,23 @@ app.whenReady().then(()=> {
     if (numberOfFiles == numberOfFilesLoaded) {  
       console.log('errors: ', numberOfFiles, numberOfFilesLoaded);
 
-      //dialog.showMessageBox('Success', 'All JSON files were loaded successfully');
-      dialog.showMessageBox({
-        // option Object
-        type: 'info',
-        buttons: [],
-        defaultId: 0,
-        icon: '',
-        title: 'Success',
-        message: `All JSON files from [${folder}] were successfully loaded`,
-        detail: '', //`${numberOfFilesLoaded} - ${numberOfFilesLoaded}`,
-        checkboxLabel: '',
-        checkboxChecked: false,
-        cancelId: 0,
-        noLink: false,
-        normalizeAccessKeys: false,
-      })
+      // This got annoying...
+      //
+      // dialog.showMessageBox({
+      //   // option Object
+      //   type: 'info',
+      //   buttons: [],
+      //   defaultId: 0,
+      //   icon: '',
+      //   title: 'Success',
+      //   message: `All JSON files from [${folder}] were successfully loaded`,
+      //   detail: '', //`${numberOfFilesLoaded} - ${numberOfFilesLoaded}`,
+      //   checkboxLabel: '',
+      //   checkboxChecked: false,
+      //   cancelId: 0,
+      //   noLink: false,
+      //   normalizeAccessKeys: false,
+      // })
     }
 
     return fileContents

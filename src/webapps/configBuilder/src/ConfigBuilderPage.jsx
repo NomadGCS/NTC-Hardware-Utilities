@@ -16,8 +16,8 @@ import SpaceDashboardOutlinedIcon from '@mui/icons-material/SpaceDashboardOutlin
 import { ImportModalDialog } from "./base/modals/ConfirmModalDialog.jsx";
 
 // Data
-import { configFileSample } from "./data/configUIData";
-import { configFormSchema } from "./data/configFormSchema";
+//import { configFileSample } from "./data/configUIData";
+//import { configFormSchema } from "./data/configFormSchema";
 
 // CSS
 import './styles/configbuilderpage.css'
@@ -29,7 +29,7 @@ import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx"
 import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
 import { loadTranslations, sortArray } from "./translation/TranslationUtils";
 
-export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
+export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName, schemaJSON}) {
 
     // STATE
     const [showSchema, setShowSchema] = useState(false);
@@ -37,7 +37,7 @@ export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
     const [configData, setConfigData] = useState(assetConfigJSON) //useState({configFileSample})
     const [modules, setModules] = useState([])
     const [systems, setSystems] = useState([])
-    const [schemaData, setSchemaData] = useState({configFormSchema})
+    const [schemaData, setSchemaData] = useState(schemaJSON); //useState({configFormSchema})
     const [systemSchemas, setSystemSchemas] = useState(Object.keys(schemaJSON.systems)); //useState(Object.keys(configFormSchema.systems));
     const [moduleSchemas, setModuleSchemas] = useState(Object.keys(schemaJSON.modules)); //useState(Object.keys(configFormSchema.modules));
     const [schemaChanged, setSchemaChanged] = useState(0);
@@ -81,35 +81,19 @@ export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
     }, [schemaChanged])
 
 
-    /**
-     * Called first time this component is loaded
-     */
+    
+    // Called first time this component is loaded    
     useEffect(()=>{
-        console.log('configData: ', configData);
-
-        const configSchemaSample = schemaData?.configFormSchema ?? null;
-        if (configSchemaSample) {
-            setSchemaData(schemaData.configFormSchema);
-            console.log(configSchemaSample);
-        }
-
-        const configFileSample = configData?.configFileSample ?? null;
-        if (configFileSample) {            
-            setConfigData(configFileSample);
-            loadConfigFile(configFileSample);
-
-            //console.log(configFileSample);
+        if (configData) {            
+            setConfigData(configData);
+            loadConfigFile(configData);
         }
     }, [])
-
     
-    /**
-     * Summary:  Called when config data changes
-     */
-    useEffect(()=> {
-        const firstRender = configData.configFileSample != null;
-        if (firstRender) return;
-
+    
+    // Summary:  Called when config data changes    
+    useEffect(()=> {        
+        // stuff changed, update state
         loadConfigFile(configData);
     }, [configData])
 
@@ -118,6 +102,11 @@ export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
     // FUNCTIONS
     // -------------------------------------------------------------------------------------------------
 
+    // Save file to local drive.  Every time data changes.
+    async function saveFile(json) {
+        //console.log('Save File: ', assetConfigFileName, json);
+        await window.electronAPI.saveFile(JSON.stringify(json, null, 2), assetConfigFileName);
+    }
 
     /**
      * Summary:  Loads JSON into UI state variables
@@ -390,6 +379,10 @@ export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
 
             // Save change to state
             setConfigData(newConfigData);
+
+            // Save to local file system
+            // TODO
+             saveFile(newConfigData);
 
             // Close the form
             handleCancelForm();

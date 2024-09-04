@@ -18,8 +18,6 @@ import ExclusionInput from "../inputs/ExclusionInput.jsx";
 import TriggerInput from "../inputs/TriggerInput.jsx";
 import PreconditionInput from "../inputs/PreconditionInput.jsx";
 import InterlockMap from "../interlockMap/InterlockMap.jsx";
-
-// PUT THIS BACK LATER
 import TranslationInput from "../translation/TranslationInput.jsx";
 
 
@@ -38,6 +36,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
     //const theme = useTheme()
 
     function factory(type, label, path, value) {
+        console.log('Factory: ', label, type, path, value);
 
         if (type === "input") {
             // disable the input
