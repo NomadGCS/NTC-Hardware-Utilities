@@ -1,0 +1,119 @@
+{
+    "type": "light", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "format": "string",
+            "required": false,
+            "value": "Lights"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "format": "string",
+            "values": "systemTypes",
+            "required": true,
+            "readonly": true,
+            "value": "light"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.light.name" }
+        },
+        "location": {
+            "label": "Location",
+            "path": "config.location",
+            "type": "translation",
+            "value": { "value": "location.other" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "color": {
+            "label": "Color",
+            "path": "config.color",
+            "type": "switch",
+            "format": "boolean",
+            "value": true
+        },
+        "brightness": {
+            "label": "Brightness",
+            "path": "config.brightness",
+            "type": "switch",
+            "format": "boolean",
+            "value": true
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "status": {
+            "label": "Status",
+            "path": "state.status",
+            "type": "input",
+            "format": "text",
+            "value": "off"
+        },
+        "presetId": {
+            "label": "Preset Id",
+            "path": "state.presetId",
+            "type": "input",
+            "format": "number",
+            "value": 0
+        },
+        "brightnessValue": {
+            "label": "Brightness Value",
+            "path": "state.brightness",
+            "type": "input",
+            "format": "double",
+            "value": 0
+        },
+        "separator-4": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "hardwareInputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "format": "array",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "format": "array",
+            "value": []
+        },
+        "exclusions": {
+            "label": "Exclusions",
+            "path": "hardware.exclusions",
+            "type": "exclusions",
+            "format": "array",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "format": "object",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "format": "array",
+            "value": []
+        }
+    }
+}

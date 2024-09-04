@@ -1,19 +1,18 @@
 {
-	"type": "awning",	
-	"last_updated": "2024/09/04",
-	"fields": {
-            "displayName": {
+    "type": "powerSource",
+    "fields": {
+       "displayName": {
                 "label": "Display Name",
                 "path": "meta.id",
                 "additionalPaths": ["id"],
                 "type": "input",
-                "value": "Awning"
+                "value": "Power Source"
             },
             "name": {
                 "label": "Name",
                 "path": "name",
                 "type": "translation",
-                "value": { "value": "modules.awning.name" }
+                "value": { "value": "modules.shorePower.name" }
             },
             "type": {
                 "label": "Type",
@@ -21,7 +20,7 @@
                 "type": "dropdown",
                 "values": "moduleTypes",
                 "readonly": true,
-                "value": "Awning"
+                "value": "powerSource"
             },
             "systemIds": {
                 "label": "Systems",
@@ -30,5 +29,5 @@
                 "values": "existingSystemsForModule",
                 "value": []
             }
-        }
+    }
 }

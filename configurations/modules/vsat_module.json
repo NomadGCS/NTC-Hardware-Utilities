@@ -1,19 +1,18 @@
 {
-    "type": "hvac",
+    "type": "vsat",
     "fields": {
         "displayName": {
             "label": "Display Name",
             "path": "meta.id",
             "additionalPaths": ["id"],
             "type": "input",
-            "required": true,
-            "value": "hvac"
+            "value": "VSAT"
         },
         "name": {
             "label": "Name",
             "path": "name",
             "type": "translation",
-            "value": { "value": "modules.hvac.name" }
+            "value": { "value": "modules.vsat.name" }
         },
         "type": {
             "label": "Type",
@@ -21,7 +20,7 @@
             "type": "dropdown",
             "values": "moduleTypes",
             "readonly": true,
-            "value": "hvac"
+            "value": "VSAT"
         },
         "systemIds": {
             "label": "Systems",

@@ -1,0 +1,68 @@
+ {
+    "type": "generator", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Generator"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "mast"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.generator.name" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "hardwareSource": {
+            "label": "source",
+            "path": "hardware.source",
+            "type": "input",
+            "value": "nti",
+            "group": 1
+        },
+        "hardwareIndex": {
+            "label": "index",
+            "path": "hardware.index",
+            "type": "input",
+            "value": "2",
+            "group": 1
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

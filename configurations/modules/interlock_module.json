@@ -1,5 +1,5 @@
 {
-    "type": "hvac",
+    "type": "interlock",
     "fields": {
         "displayName": {
             "label": "Display Name",
@@ -29,6 +29,13 @@
             "type": "multiselect",
             "values": "existingSystemsForModule",
             "value": []
+        },
+        "interlock-map": {
+            "label": "Interlock Map",
+            "path": "config.svg",
+            "type": "interlock-map",
+            "format": "string",
+            "value": ""
         }
     }
 }

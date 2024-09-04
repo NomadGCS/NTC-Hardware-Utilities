@@ -4,11 +4,36 @@ import {Box, Stack} from "@mui/material";
 import './i18n/i18n.js';
 
 
-export default function ConfigBuilder() {
+export default function ConfigBuilder({assetConfigJSON}) {
   const [modules, setModules] = useState(null)
   const [systems, setSystems] = useState(null)
   const [schema, setSchema] = useState(null)
   const [availableFiles, setAvailableFiles] = useState([]);
+
+  // -------------------------------------------------------------------------------------------------
+  // USE EFFECTS
+  // -------------------------------------------------------------------------------------------------
+  
+  useEffect(() => {
+    getFromMain();
+  }, [])
+
+  useEffect(() => {
+    if (modules && systems) {
+      const newSchema = {
+        "version": "0.9.2",
+        "templateVersion": "0.0.1",
+        "modules": modules,
+        "systems": systems
+      }
+      setSchema(newSchema);
+    }
+  }, [modules, systems])
+
+  
+  // -------------------------------------------------------------------------------------------------
+  // FUNCTIONS
+  // -------------------------------------------------------------------------------------------------
 
   async function getFromMain() {
     setModules(await window.electronAPI.getFolder('modules'))
@@ -25,30 +50,17 @@ export default function ConfigBuilder() {
     setAvailableFiles(fileList);
   }
 
-  useEffect(() => {
-    if (modules && systems) {
-      const newSchema = {
-        "version": "0.9.2",
-        "templateVersion": "0.0.1",
-        "modules": modules,
-        "systems": systems
-      }
-      setSchema(newSchema);
-    }
-  }, [modules, systems])
-
-  console.log(modules);
-  console.log(systems);
-  console.log(schema);
+  console.log("Modules: ", modules);
+  console.log("Systems: ", systems);
+  console.log("Schema: ", schema);
 
   return (       
     <div name='config-builder-component' style={{height:'100%', background: 'white', borderRadius: '7px'}}>  
-      <div>
-        <button onClick={getFromMain}>Get Files</button>
-        <button onClick={openFolder}>Open Folder</button>
-        <button onClick={listFiles}>List Files</button>
-      </div>    
-      <ConfigBuilderPage></ConfigBuilderPage>
+      {schema ? 
+        <ConfigBuilderPage assetConfigJSON={assetConfigJSON} schemaJSON={schema}></ConfigBuilderPage>      
+        :
+        <div>Loading Schemas.  Please wait.</div>
+      }
     </div>   
   )
 }

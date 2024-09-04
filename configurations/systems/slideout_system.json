@@ -1,0 +1,103 @@
+{
+    "type": "slideout", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Slideout System"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "Slideout"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.slideout.name" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "hardwareTimeoutDeploy": {
+            "label": "Timeout for Extend (ms)",
+            "path": "hardware.timeouts.extend",
+            "type": "input",
+            "format": "int",
+            "value": "0",
+            "group": 2
+        },
+        "hardwareTimeoutStow": {
+            "label": "Timeout for Retract (ms)",
+            "path": "hardware.timeouts.retract",
+            "type": "input",
+            "format": "int",
+            "value": "0",
+            "group": 2
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareActionsExtend": {
+            "label": "Action - Extend (int)",
+            "path": "hardware.actions.extend",
+            "type": "input",
+            "format": "int",
+            "value": "1",
+            "group": 1
+        },
+        "hardwareActionsRetract": {
+            "label": "Action - Retract (int)",
+            "path": "hardware.actions.retract",
+            "type": "input",
+            "format": "int",
+            "value": "1",
+            "group": 1
+        },
+        "hardwareActionsStop": {
+            "label": "Action - Stop (int)",
+            "path": "hardware.actions.stop",
+            "type": "input",
+            "format": "int",
+            "value": "0",
+            "group": 1
+        },
+        "separator-4": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "Inputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

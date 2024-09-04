@@ -1,0 +1,92 @@
+{
+	"type": "awning",	
+	"last_updated": "2024/09/04",
+	"fields": {
+		"displayName": {
+			"label": "Display Name",
+			"path": "meta.id",
+			"additionalPaths": ["id"],
+			"type": "input",
+			"value": "Awning System"
+		},
+		"type": {
+			"label": "Type",
+			"path": "type",
+			"type": "dropdown",
+			"values": "systemTypes",
+			"readonly": true,
+			"value": "Awning"
+		},
+		"separator-1": {
+			"type": "separator"
+		},
+		"name": {
+			"label": "Name",
+			"path": "name",
+			"type": "translation",
+			"value": { "value": "modules.awning.name" }
+		},
+		"separator-2": {
+			"type": "separator"
+		},
+		"hardwareTimeoutDeploy": {
+			"label": "Timeout for Extend (ms)",
+			"path": "hardware.timeouts.extend",
+			"type": "input",
+			"value": "0",
+			"group": 1
+		},
+		"hardwareTimeoutStow": {
+			"label": "Timeout for Retract (ms)",
+			"path": "hardware.timeouts.retract",
+			"type": "input",
+			"value": "0",
+			"group": 1
+		},
+		"separator-3": {
+			"type": "separator"
+		},
+		"hardwareActionsExtend": {
+			"label": "Action - Extend (int)",
+			"path": "hardware.actions.extend",
+			"type": "input",
+			"value": "1",
+			"group": 2
+		},
+		"hardwareActionsRetract": {
+			"label": "Action - Retract (int)",
+			"path": "hardware.actions.retract",
+			"type": "input",
+			"value": "1",
+			"group": 2
+		},
+		"hardwareActionsStop": {
+			"label": "Action - Stop (int)",
+			"path": "hardware.actions.stop",
+			"type": "input",
+			"value": "0",
+			"group": 2
+		},
+		"separator-4": {
+			"type": "separator"
+		},
+		"hardwareOutputs": {
+			"label": "Outputs",
+			"path": "hardware.outputs",
+			"type": "hardwareOutputs",
+			"value": []
+		},
+		"triggers": {
+			"label": "Triggers",
+			"path": "triggers",
+			"type": "triggers",
+			"value": []
+		},
+		"preconditions": {
+			"label": "Preconditions",
+			"path": "preconditions",
+			"type": "preconditions",
+			"value": []
+		}
+	}
+}

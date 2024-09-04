@@ -1,0 +1,115 @@
+{
+    "type": "interlock", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "required": false,
+            "value": "Interlock"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "interlock"
+        },
+        "group": {
+            "label": "Group",
+            "path": "hardware.group",
+            "type": "input",
+            "format": "string",
+            "required": false,
+            "value": ""
+        },
+        "separator-0": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.interlock.name" }
+        },
+        "location": {
+            "label": "Location",
+            "path": "config.location",
+            "type": "translation",
+            "value": { "value": "location.other" }
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "Inputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "exclusions": {
+            "label": "Exclusions",
+            "path": "hardware.exclusions",
+            "type": "exclusions",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "x": {
+            "label": "X position",
+            "path": "config.x",
+            "type": "input",
+            "format": "int",
+            "value": 0,
+            "group": 1
+        },
+        "y": {
+            "label": "Y position",
+            "path": "config.y",
+            "type": "input",
+            "format": "int",
+            "value": 0,
+            "group": 1
+        },
+        "height": {
+            "label": "height",
+            "path": "config.height",
+            "type": "input",
+            "format": "int",
+            "value": 0,
+            "group": 1
+        },
+        "width": {
+            "label": "width",
+            "path": "config.width",
+            "type": "input",
+            "format": "int",
+            "value": 0,
+            "group": 1
+        },
+        "rotation": {
+            "label": "rotation",
+            "path": "config.rotation",
+            "type": "input",
+            "format": "int",
+            "value": 0,
+            "group": 1
+        }
+    }
+}

@@ -1,0 +1,72 @@
+{
+    "type": "mast", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Mast"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "mast"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.mast.name" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "height": {
+            "label": "Height",
+            "path": "config.height",
+            "type": "switch",
+            "value": false
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareInputs": {
+            "label": "Inputs",
+            "path": "hardware.inputs",
+            "type": "hardwareInputs",
+            "value": []
+        },
+        "hardwareOutputs": {
+            "label": "Outputs",
+            "path": "hardware.outputs",
+            "type": "hardwareOutputs",
+            "value": []
+        },
+        "exclusions": {
+            "label": "Exclusions",
+            "path": "hardware.exclusions",
+            "type": "exclusions",
+            "value": []
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

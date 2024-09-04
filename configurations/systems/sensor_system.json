@@ -1,0 +1,112 @@
+{
+    "type": "sensor", 
+    "last_updated": "2024/09/04",
+    "fields": {
+        "displayName": {
+            "label": "Display Name",
+            "path": "meta.id",
+            "additionalPaths": ["id"],
+            "type": "input",
+            "value": "Sensor System"
+        },
+        "type": {
+            "label": "Type",
+            "path": "type",
+            "type": "dropdown",
+            "values": "systemTypes",
+            "readonly": true,
+            "value": "Sensor"
+        },
+        "separator-1": {
+            "type": "separator"
+        },
+        "name": {
+            "label": "Name",
+            "path": "name",
+            "type": "translation",
+            "value": { "value": "modules.sensor.name" }
+        },
+        "location": {
+            "label": "Location",
+            "path": "config.location",
+            "type": "translation",
+            "value": { "value": "location.other" }
+        },
+        "separator-2": {
+            "type": "separator"
+        },
+        "configAlertThreshold": {
+            "label": "Alert Threshold",
+            "path": "config.alertThreshold",
+            "type": "input",
+            "value": 1
+        },
+        "configSensorSubType": {
+            "label": "Type of Sensor",
+            "path": "config.type",
+            "type": "dropdown",
+            "values": "sensorTypes",
+            "value": "temperature"
+        },
+        "separator-3": {
+            "type": "separator"
+        },
+        "hardwareSource": {
+            "label": "Source",
+            "path": "hardware.source",
+            "type": "input",
+            "value": "mqtt",
+            "readonly": true,
+            "group": 1
+        },
+        "hardwareMQTTEventType": {
+            "label": "MQTT Event - Type",
+            "path": "hardware.event.type",
+            "type": "input",
+            "value": "sensor",
+            "readonly": true,
+            "group": 1
+        },
+        "hardwareMQTTEventLog": {
+            "label": "MQTT Event - Logged?",
+            "path": "hardware.event.log",
+            "type": "switch",
+            "value": true,
+            "group": 1
+        },
+        "separator-5": {
+            "type": "separator"
+        },
+        "hardwareMQTTTopic": {
+            "label": "MQTT Topic - (must match Type of Sensor)",
+            "path": "hardware.topic",
+            "type": "dropdown",
+            "values": "sensorTypes",
+            "value": "temperature",
+            "group": 1
+        },
+        "hardwareMQTTEventKey": {
+            "label": "MQTT Key - (must match Type of Sensor)",
+            "path": "hardware.event.key",
+            "type": "dropdown",
+            "values": "sensorTypes",
+            "value": "temperature",
+            "group": 1
+        },
+        "separator-4": {
+            "type": "separator"
+        },
+        "triggers": {
+            "label": "Triggers",
+            "path": "triggers",
+            "type": "triggers",
+            "value": []
+        },
+        "preconditions": {
+            "label": "Preconditions",
+            "path": "preconditions",
+            "type": "preconditions",
+            "value": []
+        }
+    }
+}

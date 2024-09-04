@@ -1,19 +1,18 @@
 {
-    "type": "hvac",
+    "type": "weatherStation",
     "fields": {
         "displayName": {
             "label": "Display Name",
             "path": "meta.id",
             "additionalPaths": ["id"],
             "type": "input",
-            "required": true,
-            "value": "hvac"
+            "value": "Weather Station"
         },
         "name": {
             "label": "Name",
             "path": "name",
             "type": "translation",
-            "value": { "value": "modules.hvac.name" }
+            "value": { "value": "modules.weatherStation.name" }
         },
         "type": {
             "label": "Type",
@@ -21,7 +20,7 @@
             "type": "dropdown",
             "values": "moduleTypes",
             "readonly": true,
-            "value": "hvac"
+            "value": "Weather Station"
         },
         "systemIds": {
             "label": "Systems",

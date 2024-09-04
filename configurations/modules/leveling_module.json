@@ -1,5 +1,5 @@
 {
-    "type": "hvac",
+    "type": "leveling",
     "fields": {
         "displayName": {
             "label": "Display Name",
@@ -13,7 +13,7 @@
             "label": "Name",
             "path": "name",
             "type": "translation",
-            "value": { "value": "modules.hvac.name" }
+            "value": { "value": "modules.leveling.name" }
         },
         "type": {
             "label": "Type",
@@ -21,7 +21,7 @@
             "type": "dropdown",
             "values": "moduleTypes",
             "readonly": true,
-            "value": "hvac"
+            "value": "leveling"
         },
         "systemIds": {
             "label": "Systems",
@@ -29,6 +29,6 @@
             "type": "multiselect",
             "values": "existingSystemsForModule",
             "value": []
-        }
+        }        
     }
 }

@@ -27,19 +27,19 @@ import ConfigBuilderForm from "./ConfigBuilderForm.jsx";
 import ConfigViewButtonGroup from "./misc/ConfigViewButtonGroup.jsx";
 import ConfigBuilderCreateNewModal from "./misc/ConfigBuilderCreateNewModal.jsx";
 import { copyToClipBoard, copyTextFromInput } from './util/configBuilderPageFunctions';
-import {loadTranslations, sortArray} from "./translation/TranslationUtils";
+import { loadTranslations, sortArray } from "./translation/TranslationUtils";
 
-export default function ConfigBuilderPage() {
+export default function ConfigBuilderPage({assetConfigJSON, schemaJSON}) {
 
     // STATE
     const [showSchema, setShowSchema] = useState(false);
     const [showBuilderForm, setShowBuilderForm] = useState(false);
-    const [configData, setConfigData] = useState({configFileSample})
+    const [configData, setConfigData] = useState(assetConfigJSON) //useState({configFileSample})
     const [modules, setModules] = useState([])
     const [systems, setSystems] = useState([])
     const [schemaData, setSchemaData] = useState({configFormSchema})
-    const [systemSchemas, setSystemSchemas] = useState(Object.keys(configFormSchema.systems));
-    const [moduleSchemas, setModuleSchemas] = useState(Object.keys(configFormSchema.modules));
+    const [systemSchemas, setSystemSchemas] = useState(Object.keys(schemaJSON.systems)); //useState(Object.keys(configFormSchema.systems));
+    const [moduleSchemas, setModuleSchemas] = useState(Object.keys(schemaJSON.modules)); //useState(Object.keys(configFormSchema.modules));
     const [schemaChanged, setSchemaChanged] = useState(0);
     const [fileName, setFileName] = useState("my-asset-config.json");
 
@@ -61,10 +61,12 @@ export default function ConfigBuilderPage() {
     const MODULE = 0;
     const SYSTEM = 1;
 
-    
-    /**
-     * Summary:  Called when schema changes
-     */
+
+    // -------------------------------------------------------------------------------------------------
+    // USE EFFECTS
+    // -------------------------------------------------------------------------------------------------
+        
+    // Summary:  Called when schema changes
     useEffect(()=> {
         if (schemaChanged > 0) {
             const moduleSchemas = Object.keys(schemaData.modules);
@@ -83,6 +85,8 @@ export default function ConfigBuilderPage() {
      * Called first time this component is loaded
      */
     useEffect(()=>{
+        console.log('configData: ', configData);
+
         const configSchemaSample = schemaData?.configFormSchema ?? null;
         if (configSchemaSample) {
             setSchemaData(schemaData.configFormSchema);
@@ -108,6 +112,11 @@ export default function ConfigBuilderPage() {
 
         loadConfigFile(configData);
     }, [configData])
+
+    
+    // -------------------------------------------------------------------------------------------------
+    // FUNCTIONS
+    // -------------------------------------------------------------------------------------------------
 
 
     /**
