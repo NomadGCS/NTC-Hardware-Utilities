@@ -128,7 +128,8 @@ function MainPage() {
           </p>
           <h3>Important Folder Paths</h3>          
           <ul>
-            <li><b>General Folder Path:</b>  C:\Users\[first].[last]\AppData\Roaming\config-builder </li>
+            <li><b>Local Folder Path:</b>  C:\Users\[first].[last]\AppData\Roaming\config-builder </li>
+            <li><b>Shared Folder Path:</b>  O:\NTC Shared\Config-Builder </li>
             <li><b>Asset Configs:</b>   \asset-configs</li>
             <li><b>Module Schemas:</b>  \configurations\modules</li>
             <li><b>System Schemas:</b>  \configurations\systems</li>

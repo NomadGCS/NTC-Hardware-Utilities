@@ -9,7 +9,9 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        loadingGif: './nomad_logo.gif'
+      },
     },
     {
       name: '@electron-forge/maker-zip',
