@@ -23,8 +23,28 @@ const INTERLOCKMAP_PRELOAD = INTERLOCK_MAPPER_PRELOAD_WEBPACK_ENTRY;
 const CONFIGBUILDER = CONFIG_BUILDER_WEBPACK_ENTRY;                 
 const CONFIGBUILDER_PRELOAD = CONFIG_BUILDER_PRELOAD_WEBPACK_ENTRY; 
 const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis";
-const CONFIGURATIONS_PATH = '../../configurations/';
-const ASSET_CONFIGS_PATH = '../../asset-configs/';
+const CONFIGURATIONS_PATH =  'configurations';  //'../../configurations/';
+const ASSET_CONFIGS_PATH = 'asset-configs';  //'../../asset-configs/';
+
+// TODO:  Move this to an external .ini eventally
+const configBuilderSetup = {
+  requiredFolders: {
+    moduleSchemas: {
+      path: 'configurations\modules',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\configurations\\modules\\'
+    },
+    systemSchemas: {
+      path: 'configurations\systems',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\configurations\\systems\\'
+    },
+    assetConfigs: {
+      path: 'asset-configs',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\asset-configs\\'
+    }
+  }
+}
+
+
 
 let activeWindow = 0;
 
@@ -150,7 +170,11 @@ app.whenReady().then(() => {
   // Custom Menu - This will remove devtools ability  (ctrl+shift+i)
   // Possible Fixes - https://stackoverflow.com/questions/30294600/how-to-include-chrome-devtools-in-electron
   //
-  createMenu()
+  createMenu();
+
+
+  // directories needed for config builder
+  initializeDirectories();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -198,8 +222,64 @@ function switchWindow(webapp, preload = "") {
   createMenu();
 }
 
+
+// Make sure the required directories exist
+function initializeDirectories() {  
+  const requiredFolders = ['asset-configs', 'configurations/modules', 'configurations/systems']
+  requiredFolders.forEach((folder) => {
+    const localPath = getLocalPathString(folder);
+    console.log('LocalPath: ', localPath);
+    verifyFolderExists(localPath);    
+  })
+}
+
+
+// central spot to get local paths for config builder
+function getLocalPathString(relativePath) {
+  const userDataPath = app.getPath('userData');  console.log('User Data Path: ', userDataPath);
+  console.log('Relative Path: ', relativePath);
+
+  return path.join(app.getPath('userData'), relativePath);
+}
+
+
+// checks if folder exists, and create if it doesn't
+function verifyFolderExists(folderPath) {
+  if (!fs.existsSync(folderPath)){
+    console.log('Folder does not exist, creating it: ', folderPath);
+    fs.mkdirSync(folderPath, { recursive: true });    
+    
+    if (folderPath.includes('modules')) {
+      // copy files over
+      //const sourcePath = path.join(app.getPath(__dirname), "../../asset-configs");
+      // fs.readdirSync('O:\\NTC Shared\\Config-Builder\\configurations\\modules\\').forEach(file => {
+      //   console.log('Found a file.  Copy to local directory: ', file);
+      //   fs.writeFileSync(folderPath, file);
+      // });
+
+      // copy entire directory
+      fs.cp('O:\\NTC Shared\\Config-Builder\\configurations\\modules\\', folderPath, { recursive: true }, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }      
+        console.log('directory copied successfully!');
+      });
+      
+    }
+  }
+  else {
+    console.log('Folder exists: ', folderPath);
+  }
+}
+
 function openFolder(relativePath) {
-  shell.openPath(path.join(__dirname, relativePath));
+
+  const localPath = getLocalPathString(relativePath);
+  shell.openPath(localPath);
+
+  //shell.openPath(path.join(app.getPath('userData'), relativePath));
+  // shell.openPath(path.join(__dirname, relativePath));
 }
 
 function parseJsonFile(filePath) {
@@ -219,7 +299,9 @@ app.whenReady().then(()=> {
 
     console.log("Save-Json: ", fileName, json);
     try {
-      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH + "\\" + fileName);  
+      const fullPath = getLocalPathString(ASSET_CONFIGS_PATH + "\\" + fileName);  
+      //const fullPath = path.join(app.getPath('userData'), ASSET_CONFIGS_PATH + "\\" + fileName);  
+      //const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH + "\\" + fileName);  
       fs.writeFileSync(fullPath, json);
     }
     catch(ex) {
@@ -279,8 +361,9 @@ app.whenReady().then(()=> {
   ipcMain.handle('load-File', (event, file) => {
     let fileContents = {};
     
-    try {    
-      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);  
+    try {  
+      const fullPath = getLocalPathString(ASSET_CONFIGS_PATH);    
+      //const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);  
       fileContents = parseJsonFile(`${fullPath}/${file}`);
 
       //const systemType = fileData.type;
@@ -299,7 +382,10 @@ app.whenReady().then(()=> {
   // returns a list of file names in a directory
   ipcMain.handle('listFilesInFolder', (event) => {   
     const fileList = []; 
-    const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);
+    const fullPath = getLocalPathString(ASSET_CONFIGS_PATH);
+    console.log('List Files In Folder: ', fullPath);
+
+    //const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);
     //console.log(fullPath);
     fs.readdirSync(fullPath).forEach(file => {
       //console.log(file);    

@@ -121,14 +121,17 @@ function MainPage() {
         {/* INSTRUCTIONS */}
         <div>
           <h2>Config Builder</h2>
+          <h3>Instructions</h3>          
           <p>This tool is used to create and update Asset-Configs.  Files are stored locally on your pc at the locations below.  The fields which show up in the config builder
             are defined in schemas.  You can edit existing schemas (to add a new option to a Light System for example) and you can also create new Systems by creating a new schema.
             If you do edit or create a new schema, remember to check them into github so the rest of the team has access.
           </p>
+          <h3>Important Folder Paths</h3>          
           <ul>
-            <li>Asset Configs:  \NTC-Hardware-Utilities\asset-configs</li>
-            <li>Module Schemas:  \NTC-Hardware-Utilities\configurations\modules</li>
-            <li>System Schemas:  \NTC-Hardware-Utilities\configurations\systems</li>
+            <li><b>General Folder Path:</b>  C:\Users\[first].[last]\AppData\Roaming\config-builder </li>
+            <li><b>Asset Configs:</b>   \asset-configs</li>
+            <li><b>Module Schemas:</b>  \configurations\modules</li>
+            <li><b>System Schemas:</b>  \configurations\systems</li>
           </ul>
         </div>
 
