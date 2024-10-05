@@ -151,10 +151,11 @@ const createWindow = (filepath,  preload = "") => {
 
   // Open the DevTools.
   console.log('App Packaged?: ', app.isPackaged);
-  if (!app.isPackaged) {
-    // show dev tools in debug mode
-    mainWindow.webContents.openDevTools();
-  }
+  mainWindow.webContents.openDevTools();  /// bug:  in production inputs don't work without this?
+  // if (!app.isPackaged) {
+  //   // show dev tools in debug mode
+  //   mainWindow.webContents.openDevTools();
+  // }
 };
 
 

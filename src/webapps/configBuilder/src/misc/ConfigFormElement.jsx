@@ -162,7 +162,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
                     <label>{label}</label>
 
                     <Box sx={{border: '1px solid #ccc', padding: '10px'}}>
-                        <InterlockMap data={data} rhf={rhf} />
+                        <InterlockMap data={data} rhf={rhf} globalData={options} />
                     </Box>
                 </Box>
             )
