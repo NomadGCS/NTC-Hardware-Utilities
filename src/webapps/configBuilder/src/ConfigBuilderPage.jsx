@@ -349,11 +349,17 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
         try {
             let newConfigData = {...configData};
             
-            // if the display name changes, that will become the new id, so to avoid duplicates, check if it changed and 
-            // delete the old object if it has.
+            // If the display name changes, that will become the new system Id, which may be used in other systems, modules, and wizards.  
+            //          
+            // so when a name change is detected, update all references by stringifying the entire module/system object, replacing all references,
+            // and then converting back into an object.
             const hasIdChanged = selectedId !== updatedData.id;
-            if (hasIdChanged) {
-                (formType === MODULE) ? delete newConfigData.modules[selectedId] : delete newConfigData.systems[selectedId];
+            if (hasIdChanged) {                
+                // Need to update all references of the old system id with the new one.
+                // tldr:  Convert object to string, replaceall, convert back to object.                            
+                const tempJSON = JSON.stringify(newConfigData);
+                const newTempJSON = tempJSON.replaceAll(selectedId, updatedData.id);                
+                newConfigData = JSON.parse(newTempJSON);                         
             }
 
             if (updatedData.delete) {
@@ -380,9 +386,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             // Save change to state
             setConfigData(newConfigData);
 
-            // Save to local file system
-            // TODO
-             saveFile(newConfigData);
+            // Save to local file system            
+            saveFile(newConfigData);
 
             // Close the form
             handleCancelForm();
