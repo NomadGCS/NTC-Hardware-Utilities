@@ -27,7 +27,7 @@ export default function InterlockMap({data, rhf, globalData}){
 
             console.log('Current Interlock: ', currentInterlock);
             if (typeof currentInterlock === "string") {
-                const interlockData = globalData.interlockList.find((item) => item.id === currentInterlock);
+                const interlockData = globalData.interlockList.find((item) => item.meta.id === currentInterlock);
                 const label = `x: ${interlockData.config.x}, y: ${interlockData.config.y}, width: ${interlockData.config.width}, height: ${interlockData.config.height}`;
                 setAreaLabel(label);
             }
@@ -102,7 +102,7 @@ export default function InterlockMap({data, rhf, globalData}){
                 const interlockName = selectedSystems[i].textContent;
             
                 // get the interlock system so we have access to its coords             
-                const interlockData = globalData.interlockList.find((item) => item.id === interlockName);            
+                const interlockData = globalData.interlockList.find((item) => item.meta.id === interlockName);            
                     
                 // create new object and assign it's coords
                 tempInterlocks[selectedSystems[i].textContent] = [
