@@ -198,7 +198,10 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
         });;
 
         // translation lists -> going to need these later and only want to load once
-        const translationsList = loadTranslations();          
+        const translationsList = loadTranslations();      
+        
+        // list of interlocks
+        const interlockList = Object.values(config.systems).filter((item) => item.type === "interlock");
 
         // This is used by the Form to populate dropdowns and multi-selects.
         setFormOptions({
@@ -206,7 +209,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             systemTypes,
             moduleTypes,
             translationsList,
-            sensorTypes
+            sensorTypes,
+            interlockList
         })
     }
       
@@ -470,9 +474,16 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
     }
 
     
+    //  TODO:  What does this do?
     const interlockMapUpdate = (getSys) => {
+        console.log('Interlock Map Update: ', getSys);
+
         for (let i =0; i < systems.length; i++) {
-            if (systems[i].meta.id === getSys) return systems[i];
+            if (systems[i].meta.id === getSys) {
+                let result = systems[i];
+                console.log('interlockMapUpdate: ', result);
+                return result;
+            }
         }
     }
 

@@ -317,4 +317,3 @@ export function updateField(data, formData, field) {
         }
     }
 }
-

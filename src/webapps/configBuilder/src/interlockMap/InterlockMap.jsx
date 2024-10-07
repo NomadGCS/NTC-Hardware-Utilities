@@ -17,19 +17,26 @@ export default function InterlockMap({data, rhf, globalData}){
     // show the user the interlock stats are they are drawing them
     const [areaLabel, setAreaLabel] = useState("Coordinates go here.");
    
-
     useEffect(() => {
-        console.log('Current interlock changed: ', currentInterlock);
-        console.log('global data: ', globalData);
+        console.log('Start up - Interlocks: ', interlocks);
+    }, [])
 
-        // TODO:  Need a way to query the interlock x,y,width,height values here so we can display the 
-        // existing interlock positions. 
+    useEffect(() => {        
+        if (currentInterlock) {
+            const coords = currentInterlock[0];
+
+            console.log('Current Interlock: ', currentInterlock);
+            if (typeof currentInterlock === "string") {
+                const interlockData = globalData.interlockList.find((item) => item.id === currentInterlock);
+                const label = `x: ${interlockData.config.x}, y: ${interlockData.config.y}, width: ${interlockData.config.width}, height: ${interlockData.config.height}`;
+                setAreaLabel(label);
+            }
+        }        
 
     }, [currentInterlock])
 
-    const onChangeHandler = (area) => {
-        console.log('New Interlock Data: ', area);
 
+    const onChangeHandler = (area) => {        
         let tempInterlocks = Object.assign({}, interlocks);
         tempInterlocks[currentInterlock] = area;
         setInterlocks(tempInterlocks);
@@ -41,6 +48,7 @@ export default function InterlockMap({data, rhf, globalData}){
             setAreaLabel(label);
         }
     }
+
 
     const addMap = async (e) => {
         if (!e.target.files[0]) return
@@ -62,7 +70,7 @@ export default function InterlockMap({data, rhf, globalData}){
 
     const buttonColor = (name) => {
         if (currentInterlock === name) return '#CC2027'
-        else if (interlocks[name].length) return '#69be28'
+        else if (interlocks[name].length) return '#ccc' //'#69be28'
         return '#838383';
     }
 
@@ -78,49 +86,71 @@ export default function InterlockMap({data, rhf, globalData}){
             return
         }
 
-        // TODO:
-        // check if there are pending updates...currently this is handled by the button rendering         
-
-
+        
         // show the interlock map modal
         let tempInterlocks = {}
-        for (let i = 0; i < selectedSystems.length; i++) {
-            tempInterlocks[selectedSystems[i].textContent] = []
+         
+        // when interlocks have been updated multiple times, react-hook-form may already have data we should use
+        if (rhf.interlockData && Object.keys(rhf.interlockData).length > 0) {
+            console.log('RHF already has interlocks array.  Using that')
+            tempInterlocks = rhf.interlockData;
+        } 
+        else {
+            console.log('Setting up a new interlock array');
+
+            for (let i = 0; i < selectedSystems.length; i++) {            
+                const interlockName = selectedSystems[i].textContent;
+            
+                // get the interlock system so we have access to its coords             
+                const interlockData = globalData.interlockList.find((item) => item.id === interlockName);            
+                    
+                // create new object and assign it's coords
+                tempInterlocks[selectedSystems[i].textContent] = [
+                    { 
+                        x: interlockData.config.x,
+                        y: interlockData.config.y,
+                        width: interlockData.config.width,
+                        height: interlockData.config.height,
+                        isNew: false,
+                        isChanging: false,
+                        unit: 'px'
+                    }                            
+                ]                
+            }
         }
+
         setCurrentInterlock(Object.keys(tempInterlocks)[0])
         setInterlocks(tempInterlocks)
         setUploadMap(data.value !== '' ? data.value : null)
+
         setShowModal(true);
     }
+
     
-    const submitMap = () => {        
+    const submitData = () => {        
         console.log('submit: ', interlocks, rhf.getValues('Interlock Map'));
+        
+        // This updates the 2D model        
         rhf.setValue('Interlock Map', uploadMap);
+
+        // these are the interlocks
         rhf.setInterlockData(interlocks);
+
+        setShowModal(false);
     }
 
-    // DEBUGGING
-    //console.log('showModal: ', showModal);    
-    //console.log("Interlock Systems: ", Object.keys(interlocks));
-    //console.log("Data: ", data);
-
+    
     return (
-        <div>
-            {/* prevent a bug where only most recent updates get saved...user needs to submit module before editing map. */}
-            {rhf.getValues('Interlock Map') ? 
-                <label>Pending interlock updates.  Click submit button to save them.</label>
-                :   
-                <NTCButton
-                    onClick={openModelCheck}
-                    text={data.value ? 'Edit Interlock positions' : 'Add 2D Model of Asset'}
-                    backgroundColor={data.value ? '#69be28' : '#CC2027'}
-                />
-                
-            }
+        <div>            
+            <NTCButton
+                onClick={openModelCheck}
+                text={data.value ? 'Edit Interlock positions' : 'Add 2D Model of Asset'}
+                backgroundColor={data.value ? '#69be28' : '#CC2027'}
+            />
 
             {showModal && <BaseModalDialog
                 open={true}
-                modalTitle={`Create New interlock map - ${areaLabel}`}
+                modalTitle={`${currentInterlock} [${areaLabel}]`}
                 handleClose={()=> setShowModal(false)}
                 maxWidth={'xl'}
 
@@ -170,7 +200,7 @@ export default function InterlockMap({data, rhf, globalData}){
                 />
                 <NTCButton
                     sx={{float: 'right'}}
-                    onClick={submitMap}
+                    onClick={submitData}
                     text={'Save interlock settings'}
                     backgroundColor='#0079bd'
                 />

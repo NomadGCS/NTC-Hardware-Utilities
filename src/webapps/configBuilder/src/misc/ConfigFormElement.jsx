@@ -36,7 +36,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
     //const theme = useTheme()
 
     function factory(type, label, path, value) {
-        console.log('Factory: ', label, type, path, value);
+        //console.log('Factory: ', label, type, path, value);
 
         if (type === "input") {
             // disable the input
