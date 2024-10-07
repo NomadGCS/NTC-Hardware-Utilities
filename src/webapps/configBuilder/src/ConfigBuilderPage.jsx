@@ -613,7 +613,7 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
                                     width="auto"
                                     height="auto"                                    
                                     value={JSON.stringify(configData, (key, value) => {
-                                        if (key === "svg") return value.substring(0, 45) + "....";
+                                        if (typeof value == "string" && value.includes("data:image/")) return value.substring(0, 45) + "....";
                                         return value;
                                     }, 2)}
                                 />

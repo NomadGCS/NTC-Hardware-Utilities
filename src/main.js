@@ -106,9 +106,6 @@ const doesWindowExist = (filepath) => {
 
 
 const createWindow = (filepath,  preload = "") => {
-
-  //console.log('windows: ', windows, doesWindowExist(filepath))
-
   let found = false;
   windows.forEach((item) => {
     if (item.filepath === filepath) {
@@ -151,11 +148,11 @@ const createWindow = (filepath,  preload = "") => {
 
   // Open the DevTools.
   console.log('App Packaged?: ', app.isPackaged);
-  mainWindow.webContents.openDevTools();  /// bug:  in production inputs don't work without this?
-  // if (!app.isPackaged) {
-  //   // show dev tools in debug mode
-  //   mainWindow.webContents.openDevTools();
-  // }
+  //mainWindow.webContents.openDevTools();  /// bug:  in production inputs don't work without this?  Not necessarily, also saw issues updating inputs in dev.....
+  if (!app.isPackaged) {
+    // show dev tools in debug mode
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 
