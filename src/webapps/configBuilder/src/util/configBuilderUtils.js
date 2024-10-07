@@ -290,7 +290,7 @@ export function convertValues(value, type, prevValue) {
  * @param field - schema entry to an individual field
  */
 export function updateField(data, formData, field) {
-    console.log('jb updateField', field);
+    console.log('jb updateField', field, data, formData);
 
     // Check if the FormData contains an update for this field.
     let formValue = formData[field.label];
@@ -317,4 +317,3 @@ export function updateField(data, formData, field) {
         }
     }
 }
-

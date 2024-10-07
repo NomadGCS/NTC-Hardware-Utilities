@@ -198,7 +198,10 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
         });;
 
         // translation lists -> going to need these later and only want to load once
-        const translationsList = loadTranslations();          
+        const translationsList = loadTranslations();      
+        
+        // list of interlocks
+        const interlockList = Object.values(config.systems).filter((item) => item.type === "interlock");
 
         // This is used by the Form to populate dropdowns and multi-selects.
         setFormOptions({
@@ -206,7 +209,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             systemTypes,
             moduleTypes,
             translationsList,
-            sensorTypes
+            sensorTypes,
+            interlockList
         })
     }
       
@@ -349,11 +353,17 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
         try {
             let newConfigData = {...configData};
             
-            // if the display name changes, that will become the new id, so to avoid duplicates, check if it changed and 
-            // delete the old object if it has.
+            // If the display name changes, that will become the new system Id, which may be used in other systems, modules, and wizards.  
+            //          
+            // so when a name change is detected, update all references by stringifying the entire module/system object, replacing all references,
+            // and then converting back into an object.
             const hasIdChanged = selectedId !== updatedData.id;
-            if (hasIdChanged) {
-                (formType === MODULE) ? delete newConfigData.modules[selectedId] : delete newConfigData.systems[selectedId];
+            if (hasIdChanged) {                
+                // Need to update all references of the old system id with the new one.
+                // tldr:  Convert object to string, replaceall, convert back to object.                            
+                const tempJSON = JSON.stringify(newConfigData);
+                const newTempJSON = tempJSON.replaceAll(selectedId, updatedData.id);                
+                newConfigData = JSON.parse(newTempJSON);                         
             }
 
             if (updatedData.delete) {
@@ -380,9 +390,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             // Save change to state
             setConfigData(newConfigData);
 
-            // Save to local file system
-            // TODO
-             saveFile(newConfigData);
+            // Save to local file system            
+            saveFile(newConfigData);
 
             // Close the form
             handleCancelForm();
@@ -465,9 +474,16 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
     }
 
     
+    //  TODO:  What does this do?
     const interlockMapUpdate = (getSys) => {
+        console.log('Interlock Map Update: ', getSys);
+
         for (let i =0; i < systems.length; i++) {
-            if (systems[i].meta.id === getSys) return systems[i];
+            if (systems[i].meta.id === getSys) {
+                let result = systems[i];
+                console.log('interlockMapUpdate: ', result);
+                return result;
+            }
         }
     }
 
@@ -506,6 +522,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             }
 
             <div className='builder-content'>
+
+                {/*  LEFT COLUMN  */}
                 <Box className='side-menu'>
                     {/* MODULES */}
                     <Box className="modules">
@@ -561,6 +579,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
                     </div>
                     </Box>
                 </Box>
+
+                {/*  RIGHT COLUMN  */}
                 <div className='content'>
                     {/* FORM */}
                     {showBuilderForm &&
@@ -603,7 +623,10 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
                                     id="jsonResult"
                                     width="auto"
                                     height="auto"                                    
-                                    value={JSON.stringify(configData, null, 2)}
+                                    value={JSON.stringify(configData, (key, value) => {
+                                        if (typeof value == "string" && value.includes("data:image/")) return value.substring(0, 45) + "....";
+                                        return value;
+                                    }, 2)}
                                 />
                             }
                             {showSchema &&

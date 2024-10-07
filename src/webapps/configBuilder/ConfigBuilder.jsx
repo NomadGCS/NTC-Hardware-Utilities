@@ -37,8 +37,8 @@ export default function ConfigBuilder({assetConfigJSON, assetConfigFileName}) {
   // -------------------------------------------------------------------------------------------------
 
   async function getFromMain() {
-    setModules(await window.electronAPI.getFolder('modules'))
-    setSystems(await window.electronAPI.getFolder('systems'))
+    setModules(await window.electronAPI.getFolder('configurations\\modules'))
+    setSystems(await window.electronAPI.getFolder('configurations\\systems'))
   }
   
   
@@ -51,7 +51,7 @@ export default function ConfigBuilder({assetConfigJSON, assetConfigFileName}) {
       {schema ? 
         <ConfigBuilderPage assetConfigJSON={assetConfigJSON} assetConfigFileName={assetConfigFileName} schemaJSON={schema}> </ConfigBuilderPage>      
         :
-        <div>Loading Schemas.  Please wait.</div>
+        <div>Loading Schemas.  Please wait for a few seconds</div>
       }
     </div>   
   )

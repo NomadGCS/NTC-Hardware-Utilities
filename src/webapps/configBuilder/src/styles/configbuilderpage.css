@@ -37,7 +37,7 @@
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
 
-    overflow: auto;
+    /* overflow: auto; */
 }
 
 .side-menu {
@@ -211,10 +211,15 @@
     padding: 20px;
 
     position: relative;
-    overflow: scroll;
+
     height: 78vh;
     padding-bottom: 80px;
     border-radius: 4px;
+
+    
+    /* overflow: scroll; */
+    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 .module-details fieldset.form-wrap legend {
