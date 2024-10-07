@@ -149,8 +149,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
             return (
                 <Box>
                     <label>{label} - (Translated Text)</label>
-                    <Box sx={{border: '0px solid #ccc', padding: '00px 00px'}}>
-                        {/* PUT THIS BACK LATER */}
+                    <Box sx={{border: '0px solid #ccc', padding: '00px 00px'}}>                        
                         <TranslationInput data={value} type={label} lists={options.translationsList} rhf={rhf}/>
                     </Box>
                 </Box>
