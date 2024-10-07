@@ -511,6 +511,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
             }
 
             <div className='builder-content'>
+
+                {/*  LEFT COLUMN  */}
                 <Box className='side-menu'>
                     {/* MODULES */}
                     <Box className="modules">
@@ -566,6 +568,8 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
                     </div>
                     </Box>
                 </Box>
+
+                {/*  RIGHT COLUMN  */}
                 <div className='content'>
                     {/* FORM */}
                     {showBuilderForm &&
@@ -608,7 +612,10 @@ export default function ConfigBuilderPage({assetConfigJSON, assetConfigFileName,
                                     id="jsonResult"
                                     width="auto"
                                     height="auto"                                    
-                                    value={JSON.stringify(configData, null, 2)}
+                                    value={JSON.stringify(configData, (key, value) => {
+                                        if (key === "svg") return value.substring(0, 45) + "....";
+                                        return value;
+                                    }, 2)}
                                 />
                             }
                             {showSchema &&
