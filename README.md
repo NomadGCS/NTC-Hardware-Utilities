@@ -16,6 +16,15 @@ This is a collection of utility apps which run in a windows based electron app.
 <br>
 <br>
 
+## Config Builder Notes
+When the config builder starts it checks that a list of required folders (schemas and asset-configs) exists on the users local appData directory.  
+If the folders do not exist, it creates them, and copies the contents of the schemas and asset-configs from the O: drive.  
+For this to work properly, the team should store the latest schemas and asset-configs on the O: drive (and github).
+
+Also - there is a log for troubleshooting here:  appData\Roaming\config-builder\logs
+
+
+
 
 ## Adding a new application or window
 

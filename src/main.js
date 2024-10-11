@@ -4,6 +4,9 @@ const fs = require('fs');
 const { readFile } = require('node:fs');
 const moment = require('moment');
 
+import log from 'electron-log/main';
+
+
 let mainWindow;             // This is what is displayed on the screen
 let windows = new Set();    // This is the list of available browser windows to display
 
@@ -23,8 +26,31 @@ const INTERLOCKMAP_PRELOAD = INTERLOCK_MAPPER_PRELOAD_WEBPACK_ENTRY;
 const CONFIGBUILDER = CONFIG_BUILDER_WEBPACK_ENTRY;                 
 const CONFIGBUILDER_PRELOAD = CONFIG_BUILDER_PRELOAD_WEBPACK_ENTRY; 
 const MARKDOWN_DOCUMENTATION = "https://www.markdownguide.org/basic-syntax/#emphasis";
-const CONFIGURATIONS_PATH = '../../configurations/';
-const ASSET_CONFIGS_PATH = '../../asset-configs/';
+const CONFIGURATIONS_PATH =  'configurations';  //'../../configurations/';
+const ASSET_CONFIGS_PATH = 'asset-configs';  //'../../asset-configs/';
+
+// TODO:  Move this to an external .ini eventally
+const configBuilderSetup = {
+  requiredFolders: [
+    {
+      name: 'moduleSchemas',
+      path: 'configurations\\modules',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\configurations\\modules\\'
+    },
+    {
+      name: 'systemSchemas',
+      path: 'configurations\\systems',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\configurations\\systems\\'
+    },
+    {
+      name: 'assetConfigs',
+      path: 'asset-configs',
+      copyFrom: 'O:\\NTC Shared\\Config-Builder\\asset-configs\\'
+    }
+  ]
+}
+
+
 
 let activeWindow = 0;
 
@@ -80,9 +106,6 @@ const doesWindowExist = (filepath) => {
 
 
 const createWindow = (filepath,  preload = "") => {
-
-  //console.log('windows: ', windows, doesWindowExist(filepath))
-
   let found = false;
   windows.forEach((item) => {
     if (item.filepath === filepath) {
@@ -125,6 +148,7 @@ const createWindow = (filepath,  preload = "") => {
 
   // Open the DevTools.
   console.log('App Packaged?: ', app.isPackaged);
+  //mainWindow.webContents.openDevTools();  /// bug:  in production inputs don't work without this?  Not necessarily, also saw issues updating inputs in dev.....
   if (!app.isPackaged) {
     // show dev tools in debug mode
     mainWindow.webContents.openDevTools();
@@ -150,7 +174,12 @@ app.whenReady().then(() => {
   // Custom Menu - This will remove devtools ability  (ctrl+shift+i)
   // Possible Fixes - https://stackoverflow.com/questions/30294600/how-to-include-chrome-devtools-in-electron
   //
-  createMenu()
+  createMenu();
+
+  log.initialize();
+
+  // directories needed for config builder
+  initializeDirectories();
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -198,8 +227,89 @@ function switchWindow(webapp, preload = "") {
   createMenu();
 }
 
+
+// Make sure the required directories exist
+function initializeDirectories() {  
+  configBuilderSetup.requiredFolders.forEach((item) => {  
+    const localPath = getLocalPathString(item.path); 
+
+    console.log('LocalPath: ', localPath);
+    log.info('LocalPath: ', localPath);
+
+    verifyFolderExists(localPath, item.copyFrom);   
+    verifyFilesExist(localPath, item.copyFrom); 
+  })
+}
+
+
+// central spot to get local paths for config builder
+function getLocalPathString(relativePath) {
+  const userDataPath = app.getPath('userData');  console.log('User Data Path: ', userDataPath);
+  return path.join(app.getPath('userData'), relativePath);
+}
+
+
+function getFileCount(folderPath) {
+  const filesInDirectory = fs.readdirSync(folderPath, (err, files) => {
+    if (err) {      
+      log.error('Error: ', err);
+      return 0;
+    }
+    else {      
+      return files;
+    }
+  });
+
+  return filesInDirectory.length;     
+}
+
+// checks if local folder has file and if not, copy from network drive
+function verifyFilesExist(folderPath, copyFromPath) {
+  log.info('Verify Files Exist: ', folderPath, copyFromPath);
+  let localFileCount = getFileCount(folderPath);
+  
+  log.info(folderPath.split('\\').pop(), ' | file Count: ', localFileCount);
+
+  if (localFileCount < 1) {
+    // copy entire directory      
+    log.info('Copy files: ', copyFromPath, folderPath);
+
+    fs.cp(copyFromPath, folderPath, { recursive: true}, (err) => {
+      if (err) {
+        console.error(err);
+        log.error('Error: ', err);
+        return;
+      } 
+
+      console.log('directory copied successfully!');
+      log.info('Directory copied successfully: ', folderPath);
+      
+      // after 
+      let postFileCount = getFileCount(folderPath);  
+      log.info(folderPath.split('\\').pop(), ' | post File Count: ', postFileCount);
+    });
+  }  
+}
+
+
+// checks if folder exists, and create if it doesn't
+function verifyFolderExists(folderPath, copyFromPath) {
+  if (!fs.existsSync(folderPath)){
+
+    console.log('Folder does not exist, creating it: ', folderPath);
+    log.info('Folder does not exist, creating it: ', folderPath);
+
+    fs.mkdirSync(folderPath, { recursive: true });       
+  }
+  else {
+    console.log('Folder exists: ', folderPath);
+    log.info('Folder exists: ', folderPath);
+  }
+}
+
 function openFolder(relativePath) {
-  shell.openPath(path.join(__dirname, relativePath));
+  const localPath = getLocalPathString(relativePath);
+  shell.openPath(localPath);
 }
 
 function parseJsonFile(filePath) {
@@ -215,11 +325,10 @@ function parseJsonFile(filePath) {
 app.whenReady().then(()=> {
 
   // saves JSON file to directory
-  ipcMain.handle('save-json', (event, json, fileName) => {
-
-    console.log("Save-Json: ", fileName, json);
+  ipcMain.handle('save-json', (event, json, fileName) => {    
     try {
-      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH + "\\" + fileName);  
+      const fullPath = getLocalPathString(ASSET_CONFIGS_PATH + "\\" + fileName);        
+      log.info("Save-Json: ", fileName, ' | ', fullPath);    
       fs.writeFileSync(fullPath, json);
     }
     catch(ex) {
@@ -231,46 +340,30 @@ app.whenReady().then(()=> {
 
   // loads JSON files in a specific folder
   ipcMain.handle('get-Folder', (event, folder) => {
+    log.info('get-Folder: ', folder);
     const fileContents = {};
     let numberOfFiles = 0;
-    let numberOfFilesLoaded = 0;    
-    fs.readdirSync(`./configurations/${folder}`).forEach(file => {
-      try {
-        numberOfFiles++;
-        //let fileData = JSON.parse(fs.readFileSync(`./configurations/${folder}/${file}`));
-        let fileData = parseJsonFile(`./configurations/${folder}/${file}`)
+    let numberOfFilesLoaded = 0;   
+    let folderPath = getLocalPathString(folder);    
+    fs.readdirSync(folderPath).forEach(file => {
+      try
+       {
+        numberOfFiles++;        
+        let fileData = parseJsonFile(folderPath + '/' + file)        
         const systemType = fileData.type;
         const fields = fileData.fields;        
         fileContents[systemType] = fields;
         numberOfFilesLoaded++;
+
+        log.info('reading file....', file);
+        
       }
-      catch(ex) {        
+      catch(ex) {      
+        log.error('Exception caught while parsing JSON: ', ex);
         console.error('Exception caught while parsing JSON: ', ex);
         dialog.showErrorBox(`Error Parsing JSON from folder [${folder}]`, `Error in ${file}.  ${ex.message}.  Open the file in a text editor like Notepad++ and verify it is valid JSON.`);        
       }
     })
-
-    if (numberOfFiles == numberOfFilesLoaded) {  
-      console.log('errors: ', numberOfFiles, numberOfFilesLoaded);
-
-      // This got annoying...
-      //
-      // dialog.showMessageBox({
-      //   // option Object
-      //   type: 'info',
-      //   buttons: [],
-      //   defaultId: 0,
-      //   icon: '',
-      //   title: 'Success',
-      //   message: `All JSON files from [${folder}] were successfully loaded`,
-      //   detail: '', //`${numberOfFilesLoaded} - ${numberOfFilesLoaded}`,
-      //   checkboxLabel: '',
-      //   checkboxChecked: false,
-      //   cancelId: 0,
-      //   noLink: false,
-      //   normalizeAccessKeys: false,
-      // })
-    }
 
     return fileContents
   });
@@ -279,15 +372,12 @@ app.whenReady().then(()=> {
   ipcMain.handle('load-File', (event, file) => {
     let fileContents = {};
     
-    try {    
-      const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);  
-      fileContents = parseJsonFile(`${fullPath}/${file}`);
-
-      //const systemType = fileData.type;
-      //const fields = fileData.fields;        
-      //fileContents[systemType] = fields;      
+    try {  
+      const fullPath = getLocalPathString(ASSET_CONFIGS_PATH);          
+      fileContents = parseJsonFile(`${fullPath}/${file}`);     
     }
-    catch(ex) {        
+    catch(ex) {    
+      log.error('Exception caught while parsing JSON: ', ex);
       console.error('Exception caught while parsing JSON: ', ex);
       dialog.showErrorBox(`Error Parsing JSON in file [${file}]`, `Error in ${file}.  ${ex.message}.  Open the file in VS Code and verify it is valid JSON.`);        
     }
@@ -299,36 +389,36 @@ app.whenReady().then(()=> {
   // returns a list of file names in a directory
   ipcMain.handle('listFilesInFolder', (event) => {   
     const fileList = []; 
-    const fullPath = path.join(__dirname, ASSET_CONFIGS_PATH);
-    //console.log(fullPath);
-    fs.readdirSync(fullPath).forEach(file => {
-      //console.log(file);    
-          let stats = fs.statSync(`${fullPath}/${file}`);
+    const fullPath = getLocalPathString(ASSET_CONFIGS_PATH);
+    console.log('List Files In Folder: ', fullPath);
 
-          // get last modified date/time
-          const lastModifiedMS = stats.mtimeMs;          
-          const formattedTime = moment(lastModifiedMS).format("dddd, MMMM Do, YYYY h:mm A")
+    fs.readdirSync(fullPath).forEach(file => {      
+      let stats = fs.statSync(`${fullPath}/${file}`);
 
-          // get filesize in KB
-          const fileSize = Math.ceil(stats.size / 1024) + " KB";          
-          
-          // attempt to parse file
-          let ableToParse = false;
-          let fileContents = {};
-          try {
-            parseJsonFile(`${fullPath}/${file}`);
-            ableToParse = true;
-          }
-          catch (ex) {
-            console.log('failed to parse json: ', file)
-          }
+      // get last modified date/time
+      const lastModifiedMS = stats.mtimeMs;          
+      const formattedTime = moment(lastModifiedMS).format("dddd, MMMM Do, YYYY h:mm A")
 
-          fileList.push({
-            "fileName": file,
-            "lastModified": formattedTime,
-            "fileSize": fileSize,
-            "validJson": ableToParse,            
-          })
+      // get filesize in KB
+      const fileSize = Math.ceil(stats.size / 1024) + " KB";          
+      
+      // attempt to parse file
+      let ableToParse = false;
+      let fileContents = {};
+      try {
+        parseJsonFile(`${fullPath}/${file}`);
+        ableToParse = true;
+      }
+      catch (ex) {
+        console.log('failed to parse json: ', file)
+      }
+
+      fileList.push({
+        "fileName": file,
+        "lastModified": formattedTime,
+        "fileSize": fileSize,
+        "validJson": ableToParse,            
+      })
     });
     console.log(fileList);
     return fileList;

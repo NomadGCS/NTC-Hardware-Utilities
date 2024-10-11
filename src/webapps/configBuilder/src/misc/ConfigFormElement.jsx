@@ -36,7 +36,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
     //const theme = useTheme()
 
     function factory(type, label, path, value) {
-        console.log('Factory: ', label, type, path, value);
+        //console.log('Factory: ', label, type, path, value);
 
         if (type === "input") {
             // disable the input
@@ -149,8 +149,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
             return (
                 <Box>
                     <label>{label} - (Translated Text)</label>
-                    <Box sx={{border: '0px solid #ccc', padding: '00px 00px'}}>
-                        {/* PUT THIS BACK LATER */}
+                    <Box sx={{border: '0px solid #ccc', padding: '00px 00px'}}>                        
                         <TranslationInput data={value} type={label} lists={options.translationsList} rhf={rhf}/>
                     </Box>
                 </Box>
@@ -162,7 +161,7 @@ export default function ConfigFormElement({data, options, rhf, getModuleSystems}
                     <label>{label}</label>
 
                     <Box sx={{border: '1px solid #ccc', padding: '10px'}}>
-                        <InterlockMap data={data} rhf={rhf} />
+                        <InterlockMap data={data} rhf={rhf} globalData={options} />
                     </Box>
                 </Box>
             )

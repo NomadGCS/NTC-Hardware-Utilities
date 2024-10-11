@@ -178,11 +178,12 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
         unregister,
         control,
         setValue,
+        getValues,
         handleSubmit,
         formState: { errors }
     } = useForm({})
 
-    const rhf = { register, unregister, control, setValue, errors, handleSubmit, interlockData, setInterlockData }
+    const rhf = { register, unregister, control, setValue, getValues, errors, handleSubmit, interlockData, setInterlockData }
 
     /**
      * Summary: Takes data from the form, converts it, and updates the UI state.
@@ -219,13 +220,33 @@ export default function ConfigBuilderForm({id, type, data, options, configFormSc
             });
 
             if (formData.type === 'interlock' && Object.keys(interlockData)) {
+                console.log('Updating Interlocks -------------------------------------');
+
+                // Notes:  interlockData is a list of all the interlocks passed into the <interlockMap> component, but
+                //         only the interlocks that were modified will have data, others (by default) will be null.
+                //
+                // Potential Bug:  only the interlocks updated in the last <interlockMap> will show up here with data.  So if a user 
+                //                 does the <interlockMap> multiple times before submitting data, some updates will be lost.
+                //                 This is addressed by disabling the <interlockMap> button once it has been used.
+
+                console.log(interlockData);
+            
                 Object.keys(interlockData).map((system) => {
+
+                    console.log('Interlock Data: ', system);
+
                     let selectedSystem = interlockMapUpdate(system)
-                    let interlock = interlockData[system][0]
-                    updateLeaf(selectedSystem, 'config.x', interlock.x);
-                    updateLeaf(selectedSystem, 'config.y', interlock.y);
-                    updateLeaf(selectedSystem, 'config.height', interlock.height);
-                    updateLeaf(selectedSystem, 'config.width', interlock.width);
+                    let interlock = interlockData[system][0];
+
+                    console.log('Interlock: ', interlock, selectedSystem);
+
+                    // interlock will be undefined if it was not updated on the map
+                    if (interlock) {
+                        updateLeaf(selectedSystem, 'config.x', interlock.x);
+                        updateLeaf(selectedSystem, 'config.y', interlock.y);
+                        updateLeaf(selectedSystem, 'config.height', interlock.height);
+                        updateLeaf(selectedSystem, 'config.width', interlock.width);
+                    }
                 })
             }
 
